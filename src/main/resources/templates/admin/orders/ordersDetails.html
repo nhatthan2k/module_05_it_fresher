@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <th:block th:insert="/admin/layouts/head.html"></th:block>
+</head>
+
+<body>
+<div class="wrapper">
+    <nav id="sidebar" class="sidebar js-sidebar">
+        <div class="sidebar-content js-simplebar">
+            <a class="sidebar-brand" href="../index.html">
+                <span class="align-middle">AdminKit</span>
+            </a>
+
+            <ul class="sidebar-nav">
+                <li class="sidebar-header">
+                    Pages
+                </li>
+                <li class="sidebar-item ">
+                    <a class="sidebar-link" href="/admin">
+                        <i class="align-middle" data-feather="grid"></i> <span class="align-middle">Index</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a class="sidebar-link" href="/admin/category">
+                        <i class="align-middle" data-feather="grid"></i> <span class="align-middle">Category</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a class="sidebar-link" href="/admin/product">
+                        <i class="align-middle" data-feather="square"></i> <span class="align-middle">Product</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a class="sidebar-link" href="/admin/user">
+                        <i class="align-middle" data-feather="user"></i> <span class="align-middle">User</span>
+                    </a>
+                </li>
+                <li class="sidebar-item active">
+                    <a class="sidebar-link" href="/admin/orders">
+                        <i class="align-middle" data-feather="user"></i> <span class="align-middle">Orders</span>
+                    </a>
+                </li>
+
+            </ul>
+        </div>
+    </nav>
+
+    <div class="main">
+        <th:block th:insert="/admin/layouts/navbar.html"></th:block>
+
+        <main class="content">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="/admin/orders">
+                    <button type="button" class="btn btn-outline-info"><- Back to Orders Management</button>
+                </a>
+            </div>
+            <div class="container-fluid p-0">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Orders Details</h3>
+                        <div class="card mt-3 px-5">
+                            <div class="row my-3">
+                                <div class="col-md-6 col-12 mb-3">
+                                    <label class="form-label">Email Address</label>
+                                    <input type="text" class="form-control" th:value="${order.user.email}" disabled readonly>
+                                </div>
+                                <div class="col-md-6 col-12 mb-3">
+                                    <label class="form-label">Full Name</label>
+                                    <input type="text" class="form-control" th:value="${order.orderCustomerName}" disabled readonly>
+                                </div>
+                                <div class="col-md-6 col-12 mb-3">
+                                    <label class="form-label">Phone Number</label>
+                                    <input type="text" class="form-control" th:value="${order.phoneNumber}" disabled readonly>
+                                </div>
+                                <div class="col-md-6 col-12 mb-3">
+                                    <label class="form-label">Created Date</label>
+                                    <input type="text" class="form-control" th:value="${order.created_date}" disabled readonly>
+                                </div>
+                                <div class="col-md-12 mb-3">
+                                    <label class="form-label">Shipping Address</label>
+                                    <textarea class="form-control"  th:text="${order.address}" rows="2" disabled readonly></textarea>
+                                </div>
+                                <div class="col-md-6 col-12 mb-3">
+                                    <label class="form-label">Note</label>
+                                    <input type="text" class="form-control" th:value="${order.note}" disabled readonly>
+                                </div>
+                                <div class="col-md-6 col-12 mb-3">
+                                    <label class="form-label">Total</label>
+                                    <input type="text" class="form-control" th:value="${#numbers.formatDecimal(order.total, 0, 'COMMA', 0, 'POINT') + ' VND'}" disabled readonly>
+                                </div>
+                                <div class="box-footer d-flex justify-content-center gap-3" th:if="${order.status == 0}">
+                                    <a type="button" class="btn btn-outline-success" th:href="@{/admin/orders/accept/{id}(id = ${order.orderId})}">Accept</a>
+                                    <a type="button" class="btn btn-outline-danger" th:href="@{/admin/orders/cancel/{id}(id = ${order.orderId})}">Denide</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.card-header -->
+                    <div class="card-body">
+                        <table id="example1" class="table table-bordered table-striped text-center">
+                            <thead>
+                            <tr>
+                                <th>Product Id</th>
+                                <th>Image</th>
+                                <th class="w-25">Product Name</th>
+                                <th>Price</th>
+                                <th>Quantity</th>
+                                <th>Sub total</th>
+                            </tr>
+                            </thead>
+                            <tbody id="orders">
+                            <tr th:each="item:${orderDetailList}">
+                                <td th:text="${item.product.productId}"></td>
+                                <td>
+                                    <img th:src="${item.product.imageUrl}" width="80px" th:alt="${item.product.imageUrl}">
+                                </td>
+                                <td th:text="${item.product.productName}"></td>
+                                <td th:text="${#numbers.formatDecimal(item.price, 0, 'COMMA', 0, 'POINT') + ' VND'}"></td>
+                                <td th:text="${item.quantity}"></td>
+                                <td th:text="${#numbers.formatDecimal((item.price*item.quantity), 0, 'COMMA', 0, 'POINT') + ' VND'}"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- /.card-body -->
+                </div>
+            </div>
+        </main>
+
+        <th:block th:insert="/admin/layouts/footer.html"></th:block>
+    </div>
+</div>
+
+<th:block th:insert="/admin/layouts/script.html"></th:block>
+
+</body>
+
+>>>>>>> ec29542e3b58de09fae1b5010409bd981c248138
+</html>
