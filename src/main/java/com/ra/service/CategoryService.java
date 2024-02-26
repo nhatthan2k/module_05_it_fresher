@@ -9,8 +9,7 @@ import java.util.List;
 
 public interface CategoryService {
     Page<Category> getAll(Pageable pageable);
-    Category add(CategoryRequest categoryRequest);
-    Category edit(CategoryRequest categoryRequest, Long id);
+    Category save(Category category);
     Category findById(Long id);
     void delete(Long id);
     List<Category> getbyStatus();

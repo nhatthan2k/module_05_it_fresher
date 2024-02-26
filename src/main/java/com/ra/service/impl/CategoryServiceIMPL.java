@@ -10,6 +10,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+
 @Service
 public class CategoryServiceIMPL implements CategoryService {
     @Autowired
@@ -21,23 +22,7 @@ public class CategoryServiceIMPL implements CategoryService {
     }
 
     @Override
-    public Category add(CategoryRequest categoryRequest) {
-        Category category = Category.builder()
-                .name(categoryRequest.getName())
-                .description(categoryRequest.getDescription())
-                .status(true)
-                .build();
-        return categoryRepository.save(category);
-    }
-
-    @Override
-    public Category edit(CategoryRequest categoryRequest, Long id) {
-        Category category = Category.builder()
-                .id(id)
-                .name(categoryRequest.getName())
-                .description(categoryRequest.getDescription())
-                .status(true)
-                .build();
+    public Category save(Category category) {
         return categoryRepository.save(category);
     }
 
@@ -50,6 +35,7 @@ public class CategoryServiceIMPL implements CategoryService {
     public void delete(Long id) {
         categoryRepository.deleteById(id);
     }
+
     @Override
     public List<Category> getbyStatus() {
         return categoryRepository.findByStatus(true);
