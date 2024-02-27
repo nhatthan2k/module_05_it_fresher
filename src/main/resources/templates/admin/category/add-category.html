@@ -59,12 +59,20 @@
                             <div class="box-body">
                                 <div class="mb-3">
                                     <label class="form-label">Category Name</label>
-                                    <input type="text" class="form-control" th:field="*{categoryName}">
-                                    <small class="form-text text-danger" th:errors="*{categoryName}"></small>
+                                    <input type="text" class="form-control" th:field="*{name}">
+                                    <small class="form-text text-danger" th:errors="*{name}"></small>
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label">Descriptions</label>
                                     <textarea class="form-control"  th:field="*{description}" rows="3"></textarea>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="btn btn-primary active">
+                                        <input type="radio" th:field="*{status}" value="1" > Active
+                                    </label>
+                                    <label class="btn btn-primary">
+                                        <input type="radio" th:field="*{status}" value="0" > Block
+                                    </label>
                                 </div>
                             </div>
                             <div class="box-footer d-flex justify-content-center gap-3">

@@ -17,9 +17,7 @@ public class AdminController {
     }
 
     @GetMapping("/")
-    public String home(Model model) {
-        UserPrincipal admin = (UserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        model.addAttribute("admin", admin);
+    public String home() {
         return "admin/index";
     }
 }

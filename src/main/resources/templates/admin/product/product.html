@@ -21,12 +21,11 @@
                                 <a class="navbar-brand" th:href="@{/admin/product/add-product}">
                                     <button type="button" class="btn btn-success">+ Add new Product</button>
                                 </a>
-                                <form class="d-flex" role="search"
-                                      th:action="@{/admin/product}" method="get">
-<!--                                    <input class="form-control me-2 fst-italic" type="search"-->
-<!--                                           placeholder="Enter product's name... "-->
-<!--                                           aria-label="Search"-->
-<!--                                           name="name-search" th:value="${nameSearch}">-->
+                                <form class="d-flex" role="search" th:action="@{/admin/product/search}" method="get">
+                                    <input class="form-control me-2 fst-italic" type="search"
+                                           placeholder="Enter product's name... "
+                                           aria-label="Search"
+                                           name="nameSearch">
                                     <button class="btn btn-outline-success" type="submit">Search</button>
                                 </form>
                             </div>
@@ -34,16 +33,16 @@
                     </div>
                     <!-- /.card-header -->
                     <div class="card-body scroll-bar">
-<!--                        <div th:if="${mess!=null}"-->
-<!--                             class="alert alert-primary alert-dismissible fade show"-->
-<!--                             role="alert" id="alertMessage">-->
-<!--                            <strong th:text="${mess}"></strong>-->
-<!--                        </div>-->
-<!--                        <div th:if="${err!=null}"-->
-<!--                             class="alert alert-primary alert-dismissible fade show"-->
-<!--                             role="alert" id="alertMessageErr">-->
-<!--                            <strong th:text="${err}"></strong>-->
-<!--                        </div>-->
+                        <div th:if="${mess!=null}"
+                             class="alert alert-primary alert-dismissible fade show"
+                             role="alert" id="alertMessage">
+                            <strong th:text="${mess}"></strong>
+                        </div>
+                        <div th:if="${err!=null}"
+                             class="alert alert-primary alert-dismissible fade show"
+                             role="alert" id="alertMessageErr">
+                            <strong th:text="${err}"></strong>
+                        </div>
                         <table id="example1" class="table table-bordered table-striped text-center overflow-auto">
                             <thead>
                             <tr>
@@ -52,30 +51,21 @@
                                 <th class="w-25">Name</th>
                                 <th class="w-50">Description</th>
                                 <th class="w-25">Price</th>
-                                <th>Stock</th>
-                                <th>Status</th>
+                                <th>Quantity</th>
                                 <th>Action</th>
                             </tr>
                             </thead>
                             <tbody>
-                            <tr th:each="item : ${listProduct}">
-                                <td th:text="${item.getProductId()}"></td>
-                                <td><img width="35" height="35" th:src="@{|/upload/${item.imageUrl}|}"></td>
-                                <td th:text="${item.getProductName()}"></td>
+                            <tr th:each="item : ${products}">
+                                <td th:text="${item.getId()}"></td>
+                                <td><img width="35" height="35" th:src="@{|/uploads/${item.image}|}"></td>
+                                <td th:text="${item.getName()}"></td>
                                 <td><span th:text="${item.getDescription().length() < 100 ? item.getDescription() : item.getDescription().substring(0,100)}"></span></td>
                                 <td><span th:text="${#numbers.formatDecimal(item.getPrice(), 0, 'COMMA', 0, 'POINT') + ' VND'}"></span></td>
-                                <td th:text="${item.getStock()}"></td>
-                                <td>
-                                    <a type="button" class="btn"
-                                       th:classappend="${item.isStatus()?'btn-success':'btn-danger'}"
-                                       th:href="@{/admin/product/block/{productId}(productId=${item.productId})}"
-                                       th:attr="onclick=${item.isStatus() ? 'return confirm(`Bạn có chắc muốn khóa danh mục này ?`)' : 'return confirm(`Bạn có chắc muốn mở khóa danh mục này ?`)' }">
-                                        <span th:text="${item.isStatus() ? 'Active' : 'Block'}"></span>
-                                    </a>
-                                </td>
+                                <td th:text="${item.getQuantity()}"></td>
                                 <td>
                                     <a type="button" class="btn btn-warning"
-                                       th:href="@{/admin/product/edit-product/{productId}(productId=${item.productId})}">Edit</a>
+                                       th:href="@{/admin/product/edit-product/{productId}(productId=${item.id})}">Edit</a>
                                 </td>
                             </tr>
                             </tbody>

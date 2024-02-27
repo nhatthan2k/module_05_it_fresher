@@ -20,64 +20,13 @@ public class ProductServiceIMPL implements ProductService {
     @Autowired
     private ProductRepository productRepository;
 
-    @Autowired
-    private CategoryService categoryService;
     @Override
     public Page<Product> getAll(Pageable pageable) {
         return productRepository.findAll(pageable);
     }
 
     @Override
-    public Product add(ProductRequest productRequest) {
-        if (productRepository.existsByName(productRequest.getName())){
-            throw new RuntimeException("Tên sản phẩm đã tồn tại!");
-        }
-
-        Category category = categoryService.findById(productRequest.getCategoryId());
-
-        if (category == null) {
-            throw new RuntimeException("Không tồn tại danh mục!");
-        }
-
-        Product product = Product.builder()
-                .sku(UUID.randomUUID().toString())
-                .name(productRequest.getName())
-                .description(productRequest.getDescription())
-                .price(productRequest.getPrice())
-                .quantity(productRequest.getQuantity())
-                .image(productRequest.getImage())
-                .category(category)
-                .created(new java.sql.Date(new Date().getTime()))
-                .build();
-        return productRepository.save(product);
-    }
-
-    @Override
-    public Product edit(ProductRequest productRequest, Long id) {
-        if (productRepository.existsByName(productRequest.getName())){
-            throw new RuntimeException("Tên sản phẩm đã tồn tại!");
-        }
-
-        Category category = categoryService.findById(productRequest.getCategoryId());
-
-        if (category == null) {
-            throw new RuntimeException("Không tồn tại danh mục!");
-        }
-
-        Product productOll = findById(id);
-
-        Product product = Product.builder()
-                .id(id)
-                .sku(productOll.getSku())
-                .name(productRequest.getName())
-                .description(productRequest.getDescription())
-                .price(productRequest.getPrice())
-                .quantity(productRequest.getQuantity())
-                .image(productRequest.getImage())
-                .category(category)
-                .created(productOll.getCreated())
-                .updated(new java.sql.Date(new Date().getTime()))
-                .build();
+    public Product save(Product product) {
         return productRepository.save(product);
     }
 
@@ -104,5 +53,10 @@ public class ProductServiceIMPL implements ProductService {
     @Override
     public List<Product> getByCategoryId(Long id) {
         return productRepository.findByCategoryId(id);
+    }
+
+    @Override
+    public List<Product> searchByName(String keyword) {
+        return productRepository.searchProductByName(keyword);
     }
 }

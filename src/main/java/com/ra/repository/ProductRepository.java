@@ -1,5 +1,6 @@
 package com.ra.repository;
 
+import com.ra.model.entity.Category;
 import com.ra.model.entity.Product;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -13,7 +14,8 @@ import java.util.List;
 public interface ProductRepository extends JpaRepository<Product, Long> {
     @Query("SELECT pro from Product pro WHERE pro.name like %?1% ")
     List<Product> findByNameOrDescription(String name, String description);
-    boolean existsByName(String name);
+    @Query("SELECT p from Product p WHERE p.name like ?1% ")
+    List<Product> searchProductByName (String keyword);
     @Query("select p from Product p where p.category.status = :status")
     Page<Product> findByCategoryStatus(Pageable pageable, Boolean status);
     @Query("select p from Product p where p.category.id = :id")

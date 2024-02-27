@@ -23,9 +23,6 @@ public class Product {
     @Column(name = "product_id")
     private Long id;
 
-    @Column(length = 100, unique = true)
-    private String sku;
-
     @Column(name = "product_name", length = 100, unique = true)
     private String name;
 
@@ -39,14 +36,6 @@ public class Product {
     private int quantity;
 
     private String image;
-
-    @Column(name = "created_at")
-    @JsonFormat(pattern = "dd/mm/yyyy")
-    private Date created;
-
-    @Column(name = "updated_at")
-    @JsonFormat(pattern = "dd/mm/yyyy")
-    private Date updated;
 
     @ManyToOne
     @JoinColumn(name = "category_id", referencedColumnName = "category_id")

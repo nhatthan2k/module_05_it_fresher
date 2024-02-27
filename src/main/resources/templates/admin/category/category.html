@@ -22,7 +22,7 @@
                                 <a class="navbar-brand" href="/admin/category/add-category">
                                     <button type="button" class="btn btn-success">+ Add new Category</button>
                                 </a>
-                                <form class="d-flex" role="search" th:action="@{/admin/category/search}" method="post">
+                                <form class="d-flex" role="search" th:action="@{/admin/category/search}" method="get">
                                     <input class="form-control me-2 fst-italic" type="search" name="nameSearch"
                                            placeholder="Enter category's name..." aria-label="Search">
                                     <button class="btn btn-outline-success" type="submit">Search</button>
@@ -32,16 +32,16 @@
                     </div>
                     <!-- /.card-header -->
                     <div class="card-body">
-<!--                        <div th:if="${mess!=null}"-->
-<!--                             class="alert alert-primary alert-dismissible fade show"-->
-<!--                             role="alert" id="alertMessage">-->
-<!--                            <strong th:text="${mess}"></strong>-->
-<!--                        </div>-->
-<!--                        <div th:if="${err!=null}"-->
-<!--                             class="alert alert-danger alert-dismissible fade show"-->
-<!--                             role="alert" id="alertMessageErr">-->
-<!--                            <strong th:text="${err}"></strong>-->
-<!--                        </div>-->
+                        <div th:if="${mess!=null}"
+                             class="alert alert-primary alert-dismissible fade show"
+                             role="alert" id="alertMessage">
+                            <strong th:text="${mess}"></strong>
+                        </div>
+                        <div th:if="${err!=null}"
+                             class="alert alert-danger alert-dismissible fade show"
+                             role="alert" id="alertMessageErr">
+                            <strong th:text="${err}"></strong>
+                        </div>
                         <table id="example1" class="table table-bordered table-striped text-center">
                             <thead>
                             <tr>
@@ -53,24 +53,27 @@
                             </tr>
                             </thead>
                             <tbody id="categories">
-<!--                            <tr th:each="item:${categories}">-->
-<!--                                <td th:text="${item.getCategoryId()}"></td>-->
-<!--                                <td th:text="${item.getCategoryName()}"></td>-->
-<!--                                <td th:text="${item.getDescription()}"></td>-->
-<!--                                <td>-->
-<!--                                    <a type="button" class="btn"-->
-<!--                                       th:classappend="${item.isStatus() ? 'btn-success' : 'btn-danger'}"-->
-<!--                                       th:href="@{/admin/category/{categoryId}(categoryId=${item.categoryId})}"-->
-<!--                                       th:attr="onclick=${item.isStatus() ? 'return confirm(`Bạn có chắc muốn khóa danh mục này ?`)' : 'return confirm(`Bạn có chắc muốn mở khóa danh mục này ?`)' }"-->
-<!--                                    >-->
-<!--                                        <span th:text="${item.isStatus() ? 'Active' : 'Block'}"></span>-->
-<!--                                    </a>-->
-<!--                                </td>-->
-<!--                                <td>-->
-<!--                                    <a type="button" class="btn btn-warning"-->
-<!--                                       th:href="@{/admin/category/edit-category/{categoryId}(categoryId=${item.categoryId})}">Edit</a>-->
-<!--                                </td>-->
-<!--                            </tr>-->
+                            <tr th:each="item:${categories}">
+                                <td th:text="${item.getId()}"></td>
+                                <td th:text="${item.getName()}"></td>
+                                <td th:text="${item.getDescription()}"></td>
+                                <td>
+                                    <a type="button" class="btn"
+                                       th:classappend="${item.isStatus() ? 'btn-success' : 'btn-danger'}"
+                                       th:href="@{/admin/category/status/{categoryId}(categoryId=${item.id})}"
+                                       th:attr="onclick=${item.isStatus() ? 'return confirm(`Bạn có chắc muốn khóa danh mục này ?`)' : 'return confirm(`Bạn có chắc muốn mở khóa danh mục này ?`)' }"
+                                    >
+                                        <span th:text="${item.isStatus() ? 'Active' : 'Block'}"></span>
+                                    </a>
+                                </td>
+                                <td style="width: 180px; display: block;">
+                                    <a type="button" class="btn btn-warning"
+                                       th:href="@{/admin/category/edit-category/{categoryId}(categoryId=${item.id})}">Edit</a>
+                                    <a type="button" class="btn btn-danger"
+                                       th:href="@{/admin/category/delete/{categoryId}(categoryId=${item.id})}"
+                                       th:attr="onclick=${'return confirm(`Bạn có chắc muốn xóa danh mục này ?`)'}">delete</a>
+                                </td>
+                            </tr>
                             </tbody>
 
                         </table>

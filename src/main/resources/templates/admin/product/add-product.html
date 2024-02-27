@@ -25,13 +25,13 @@
                             <div class="box-header mb-3">
                                 <h1 class="text-xl-center mt-3" >ADD NEW PRODUCT</h1>
                             </div>
-<!--                            <div class="alert alert-danger" role="alert" th:if="${err != null}">-->
-<!--                                <strong><span th:text="${err}"></span></strong>-->
-<!--                            </div>-->
+                            <div class="alert alert-danger" role="alert" th:if="${err != null}">
+                                <strong><span th:text="${err}"></span></strong>
+                            </div>
                             <div class="box-body row">
                                 <div class="col-md-6 col-12 mb-3">
                                     <label class="form-label">Product Name</label>
-                                    <input type="text" class="form-control" th:field="*{productName}">
+                                    <input type="text" class="form-control" th:field="*{name}">
 <!--                                    <small class="form-text text-danger" th:errors="*{productName}"></small>-->
                                 </div>
 
@@ -46,17 +46,24 @@
                                 </div>
                                 <div class="col-md-6 col-12 mb-3">
                                     <label class="form-label">Stock</label>
-                                    <input type="number" class="form-control" th:field="*{stock}">
+                                    <input type="number" class="form-control" th:field="*{quantity}">
 <!--                                    <small class="form-text text-danger" th:errors="*{stock}"></small>-->
                                 </div>
                                 <div class="col-md-3 mb-3">
-                                    <img th:src="${product.imageUrl}" width="100%" id="previewImage">
+                                    <img th:src="${product.image}" width="100%" id="previewImage">
                                 </div>
                                 <div class="col-md-9 mb-3">
                                     <label class="form-label">Image</label>
                                     <input type="file" class="form-control" th:name="imageProduct" onchange="handleInputImage()">
-                                    <input type="hidden" class="form-control" th:field="*{imageUrl}" id="imageChoose">
+                                    <input type="hidden" class="form-control" th:field="*{image}" id="imageChoose">
 <!--                                    <small class="form-text text-danger" th:errors="*{imageUrl}"></small>-->
+                                </div>
+                                <div class="col-md-9 mb-3">
+                                    <label>Category Name</label>
+                                    <select class="form-control" th:field="*{category.id}">
+                                        <option th:each="item : ${categories}" th:value="${item.id}"
+                                                th:text="${item.name}"></option>
+                                    </select>
                                 </div>
                             </div>
                             <div class="box-footer d-flex justify-content-center gap-3">

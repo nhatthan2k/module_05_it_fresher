@@ -22,6 +22,11 @@ public class CategoryServiceIMPL implements CategoryService {
     }
 
     @Override
+    public List<Category> findAll() {
+        return categoryRepository.findAll();
+    }
+
+    @Override
     public Category save(Category category) {
         return categoryRepository.save(category);
     }
@@ -39,5 +44,10 @@ public class CategoryServiceIMPL implements CategoryService {
     @Override
     public List<Category> getbyStatus() {
         return categoryRepository.findByStatus(true);
+    }
+
+    @Override
+    public List<Category> searchByName(String keyword) {
+        return categoryRepository.searchCategoriesByName(keyword);
     }
 }
