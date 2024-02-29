@@ -18,5 +18,5 @@ public interface UserService {
     Users save(Users users);
     Users updateAcc(UserRegister userRegister, Long id);
     Optional<Users> findByUsername(String username);
-    List<Users> SearchByFullName(String keyword);
+    List<Users> searchByName(String keyword);
 }

@@ -63,9 +63,12 @@
                                 <td><span th:text="${item.getDescription().length() < 100 ? item.getDescription() : item.getDescription().substring(0,100)}"></span></td>
                                 <td><span th:text="${#numbers.formatDecimal(item.getPrice(), 0, 'COMMA', 0, 'POINT') + ' VND'}"></span></td>
                                 <td th:text="${item.getQuantity()}"></td>
-                                <td>
+                                <td style="width: 180px; display: block;">
                                     <a type="button" class="btn btn-warning"
                                        th:href="@{/admin/product/edit-product/{productId}(productId=${item.id})}">Edit</a>
+                                    <a type="button" class="btn btn-danger"
+                                       th:href="@{/admin/product/delete/{productId}(productId=${item.id})}"
+                                       th:attr="onclick=${'return confirm(`Bạn có chắc muốn xóa danh mục này ?`)'}">delete</a>
                                 </td>
                             </tr>
                             </tbody>

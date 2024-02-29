@@ -15,6 +15,12 @@ import java.util.UUID;
 public class OrderServiceIMPL implements OrderService {
     @Autowired
     private OrderRepository orderRepository;
+
+    @Override
+    public List<Orders> findAll() {
+        return orderRepository.findAll();
+    }
+
     @Override
     public List<Orders> getAll(Long userId) {
         return orderRepository.findAllByUserId(userId);

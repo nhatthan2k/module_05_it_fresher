@@ -10,7 +10,7 @@ import java.util.Optional;
 @Repository
 public interface UserRepository extends JpaRepository<Users, Long> {
     Optional<Users> findByUsername(String username);
-    @Query("SELECT u from Users u WHERE u.fullName like %?1% ")
-    List<Users> searchAllByUAndFullName(String keyword);
+    @Query("SELECT u from Users u WHERE u.username like ?1% ")
+    List<Users> searchAllByUsername(String keyword);
     boolean existsByUsername(String username);
 }

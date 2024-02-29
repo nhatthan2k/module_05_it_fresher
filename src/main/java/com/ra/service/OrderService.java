@@ -7,6 +7,7 @@ import com.ra.model.entity.Users;
 import java.util.List;
 
 public interface OrderService {
+    List<Orders> findAll();
     List<Orders> getAll(Long userId);
     Orders add(Users users, Double totalPrice);
     Orders getbySerial(Long userId, String serial);

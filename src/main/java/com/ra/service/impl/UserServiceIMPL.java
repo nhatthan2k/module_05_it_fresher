@@ -106,8 +106,8 @@ public class UserServiceIMPL implements UserService {
     }
 
     @Override
-    public List<Users> SearchByFullName(String keyword) {
-        return userRepository.searchAllByUAndFullName(keyword);
+    public List<Users> searchByName(String keyword) {
+        return userRepository.searchAllByUsername(keyword);
     }
 
 }

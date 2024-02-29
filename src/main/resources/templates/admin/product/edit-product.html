@@ -21,24 +21,24 @@
                 <div class="card mx-7 mt-3 px-5">
                     <div class="card-header px-7 py-3 mx-5">
                         <form th:action="@{/admin/product/edit-product}" th:object="${product}" method="post" enctype="multipart/form-data">
-                            <input type="hidden" class="form-control" th:field="*{productId}">
+                            <input type="hidden" class="form-control" th:field="*{id}">
                             <div class="box-header mb-3">
                                 <h1 class="text-xl-center mt-3" >UPDATE PRODUCT</h1>
                             </div>
                             <div class="box-body row">
                                 <div class="col-md-12 mb-3">
                                     <label class="form-label">Product ID</label>
-                                    <input type="text" class="form-control" th:field="*{productId}" readonly disabled>
+                                    <input type="text" class="form-control" th:field="*{id}" readonly disabled>
                                 </div>
                                 <div class="col-md-6 col-12 mb-3">
                                     <label class="form-label">Product Name</label>
-                                    <input type="text" class="form-control" th:field="*{productName}">
-                                    <small class="form-text text-danger" th:errors="*{productName}"></small>
+                                    <input type="text" class="form-control" th:field="*{name}">
+                                    <small class="form-text text-danger" th:errors="*{name}"></small>
                                 </div>
                                 <div class="col-md-6 col-12 mb-3">
                                     <label class="form-label">Category Name</label>
-                                    <select class="form-select" th:field="*{category.categoryId}">
-                                        <option th:each="c:${categoryList}" th:value="${c.categoryId}" th:text="${c.categoryName}" th:selected="${product.category.categoryName}"></option>
+                                    <select class="form-select" th:field="*{category.id}">
+                                        <option th:each="c:${categories}" th:value="${c.id}" th:text="${c.name}" th:selected="${product.category.name}"></option>
                                     </select>
                                 </div>
                                 <div class="col-md-12 mb-3">
@@ -52,12 +52,12 @@
                                 </div>
                                 <div class="col-md-6 col-12 mb-3">
                                     <label class="form-label">Stock</label>
-                                    <input type="number" class="form-control" th:field="*{stock}">
-                                    <small class="form-text text-danger" th:errors="*{stock}"></small>
+                                    <input type="number" class="form-control" th:field="*{quantity}">
+                                    <small class="form-text text-danger" th:errors="*{quantity}"></small>
                                 </div>
                                 <div class="col-md-3 mb-3">
-                                    <img th:src="${product.imageUrl}" width="100%" id="previewImage">
-                                    <input type="hidden" th:field="*{imageUrl}">
+                                    <img th:src="@{|/uploads/${product.image}|}" width="100%" id="previewImage">
+                                    <input type="hidden" th:field="*{image}">
                                 </div>
                                 <div class="col-md-9 mb-3">
                                     <label class="form-label">Image</label>
@@ -66,7 +66,7 @@
                             </div>
                             <div class="box-footer d-flex justify-content-center gap-3">
                                 <a type="button" class="btn btn-secondary" th:href="@{/admin/product}">Close</a>
-                                <button type="submit" class="btn btn-primary">ADD</button>
+                                <button type="submit" class="btn btn-primary">EDIT</button>
                             </div>
                         </form>
                     </div>

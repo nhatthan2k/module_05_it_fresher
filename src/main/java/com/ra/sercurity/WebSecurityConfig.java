@@ -43,7 +43,7 @@ public class WebSecurityConfig {
                         .loginProcessingUrl("/login")
                         .usernameParameter("username")
                         .passwordParameter("password")
-                        .defaultSuccessUrl("/admin", true)
+//                        .defaultSuccessUrl("/admin", true)
                 )
                 .logout(logout -> logout.logoutUrl("/logout").logoutSuccessUrl("/login"))
                 .build();
@@ -51,7 +51,7 @@ public class WebSecurityConfig {
 
     @Bean
     WebSecurityCustomizer webSecurityCustomizer() {
-        return (web -> web.ignoring().requestMatchers("/assets/**", "/fe/**"));
+        return (web -> web.ignoring().requestMatchers("/assets/**", "/fe/**", "/uploads/**"));
     }
 
     @Bean

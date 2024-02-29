@@ -19,7 +19,7 @@
                         <h3 class="card-title">Orders Management Table</h3>
                         <nav class="navbar navbar-expand-lg bg-light">
                             <div class="container-fluid">
-                                <form class="d-flex" role="search" th:action="@{/admin/category/search}" method="post">
+                                <form class="d-flex" role="search" th:action="@{/admin/orders/search}" method="get">
                                     <input class="form-control me-2 fst-italic" type="search" name="nameSearch"
                                            placeholder="Enter order's customer name..." aria-label="Search">
                                     <button class="btn btn-outline-success" type="submit">Search</button>
@@ -29,20 +29,21 @@
                     </div>
                     <!-- /.card-header -->
                     <div class="card-body">
-<!--                        <div th:if="${mess!=null}"-->
-<!--                             class="alert alert-primary alert-dismissible fade show"-->
-<!--                             role="alert" id="alertMessage">-->
-<!--                            <strong th:text="${mess}"></strong>-->
-<!--                        </div>-->
-<!--                        <div th:if="${err!=null}"-->
-<!--                             class="alert alert-danger alert-dismissible fade show"-->
-<!--                             role="alert" id="alertMessageErr">-->
-<!--                            <strong th:text="${err}"></strong>-->
-<!--                        </div>-->
+                        <div th:if="${mess!=null}"
+                             class="alert alert-primary alert-dismissible fade show"
+                             role="alert" id="alertMessage">
+                            <strong th:text="${mess}"></strong>
+                        </div>
+                        <div th:if="${err!=null}"
+                             class="alert alert-danger alert-dismissible fade show"
+                             role="alert" id="alertMessageErr">
+                            <strong th:text="${err}"></strong>
+                        </div>
                         <table id="example1" class="table table-bordered table-striped text-center">
                             <thead>
                             <tr>
                                 <th>ID</th>
+                                <th>serial number</th>
                                 <th style="width: 130px">Full Name</th>
                                 <th>Phone Number</th>
                                 <th style="width: 160px">Shipping Address</th>
@@ -54,29 +55,30 @@
                             </tr>
                             </thead>
                             <tbody id="orders">
-<!--                            <tr th:each="item:${orderList}">-->
-<!--                                <td th:text="${item.orderId}"></td>-->
-<!--                                <td class="w-auto" th:text="${item.orderCustomerName}"></td>-->
-<!--                                <td th:text="${item.phoneNumber}"></td>-->
-<!--                                <td th:text="${item.address}"></td>-->
-<!--                                <td th:text="${item.note}"></td>-->
-<!--                                <td th:text="${item.created_date}"></td>-->
-<!--                                <td class="w-auto"-->
-<!--                                    th:text="${#numbers.formatDecimal(item.total, 0, 'COMMA', 0, 'POINT') + ' VND'}"></td>-->
-<!--                                <td>-->
-<!--                                    <button class="btn" disabled-->
-<!--                                       th:classappend="${item.status == 0 ? 'btn-secondary' : (item.status == 1 ? 'btn-success' : 'btn-danger')}"-->
-<!--                                       >-->
-<!--                                        <span th:text="${item.status == 0 ?'Pending': (item.status == 1 ?'Accepted':'Denided')}"></span>-->
-<!--                                    </button>-->
-<!--                                </td>-->
-<!--                                <td>-->
-<!--                                    <a class="btn btn-outline-primary"-->
-<!--                                       th:href="@{/admin/orders/details/{id}(id=${item.orderId})}"-->
-<!--                                    >Details-->
-<!--                                    </a>-->
-<!--                                </td>-->
-<!--                            </tr>-->
+                                <tr th:each="item:${orders}">
+                                    <td th:text="${item.id}"></td>
+                                    <td th:text="${item.orderNumber}"></td>
+                                    <td class="w-auto" th:text="${item.receiveName}"></td>
+                                    <td th:text="${item.receivePhone}"></td>
+                                    <td th:text="${item.receiveAddress}"></td>
+                                    <td th:text="${item.note}"></td>
+                                    <td th:text="${item.created}"></td>
+                                    <td class="w-auto"
+                                        th:text="${#numbers.formatDecimal(item.price, 0, 'COMMA', 0, 'POINT') + ' VND'}"></td>
+                                    <td>
+                                        <button class="btn" disabled
+                                           th:classappend="${item.status == 0 ? 'btn-secondary' : (item.status == 1 ? 'btn-success' : 'btn-danger')}"
+                                           >
+                                            <span th:text="${item.status == 0 ?'Pending': (item.status == 1 ?'Accepted':'Denided')}"></span>
+                                        </button>
+                                    </td>
+                                    <td>
+                                        <a class="btn btn-outline-primary"
+                                           th:href="@{/admin/orders/details/{id}(id=${item.id})}"
+                                        >Details
+                                        </a>
+                                    </td>
+                                </tr>
                             </tbody>
 
                         </table>

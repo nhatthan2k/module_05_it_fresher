@@ -54,7 +54,7 @@ public class ProductController {
     //  add product
     @GetMapping("/product/add-product")
     public String add(Model model) {
-        List<Category> categories = categoryService.findAll();
+        List<Category> categories = categoryService.getbyStatus();
         model.addAttribute("categories", categories);
         Product product = new Product();
         model.addAttribute("product", product);
@@ -78,13 +78,23 @@ public class ProductController {
     //  edit Category
     @GetMapping("/product/edit-product/{id}")
     public String edit(Model model, @PathVariable("id") Long id) {
+        List<Category> categories = categoryService.getbyStatus();
+        model.addAttribute("categories", categories);
         Product product = productService.findById(id);
         model.addAttribute("product", product);
         return "/admin/product/edit-product";
     }
 
     @PostMapping("/product/edit-product")
-    public String update(@ModelAttribute("product") Product product) {
+    public String update(@ModelAttribute("product") Product product, @RequestParam("imageProduct") MultipartFile file) {
+        String fileName = file.getOriginalFilename();
+        try {
+            FileCopyUtils.copy(file.getBytes(),new File(pathUpload+fileName));
+            // lưu tên file vào database
+            product.setImage(fileName);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         productService.save(product);
         return "redirect:/admin/product";
     }
