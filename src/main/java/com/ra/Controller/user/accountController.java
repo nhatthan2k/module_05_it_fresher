@@ -71,14 +71,12 @@ public class accountController {
 
         boolean isPaswordMatch = passwordEncoder.matches(passwordRequest.getOldPass(), oldPassword);
         if (isPaswordMatch) {
-            if (!passwordRequest.getNewPass().equals(passwordRequest.getConfirmNewPass())){
+            if (!passwordRequest.getNewPass().equals(passwordRequest.getConfirmNewPass())) {
 //                return new ResponseEntity<>("Xác nhận mật khẩu không chính xác!", HttpStatus.BAD_REQUEST);
             }
             user.setPassword(passwordEncoder.encode(passwordRequest.getNewPass()));
             userService.save(user);
 //            return new ResponseEntity<>("cập nhật mật khẩu thành công", HttpStatus.OK);
-        }else {
-//            return new ResponseEntity<>("Mật khẩu cũ không chính xác!", HttpStatus.BAD_REQUEST);
         }
 
         return "redirect:/user/account";

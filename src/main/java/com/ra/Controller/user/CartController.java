@@ -1,5 +1,6 @@
 package com.ra.Controller.user;
 
+import com.ra.model.dto.request.QuantityRequest;
 import com.ra.model.dto.request.ShopingCartRequest;
 import com.ra.model.entity.Product;
 import com.ra.model.entity.ShopingCart;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -34,7 +36,12 @@ public class CartController {
     public String cartShop(Model model) {
         Long userId = getUserId();
         List<ShopingCart> shopingCarts = shopingCartService.getAll(userId);
+        double total = 0;
+        for (ShopingCart item: shopingCarts) {
+            total += item.getProduct().getPrice() * item.getQuantity();
+        }
         model.addAttribute("shopingCarts", shopingCarts);
+        model.addAttribute("total", total);
         return "/shop/cart";
     }
 
@@ -75,7 +82,19 @@ public class CartController {
         if (shopingCart != null) {
             shopingCartService.delete(shopingCart.getId());
         }
-        return "/shop/cart";
+        return "redirect:/user/cart";
     }
 
+    @PostMapping("/edit-cart/{id}")
+    public String editCart(@PathVariable("id") int id, @RequestParam("quantity") int quantity) {
+        Long userId = getUserId();
+        ShopingCart shopingCart = shopingCartService.findById(id);
+        if(shopingCart != null) {
+            if(shopingCart.getUsers().getId().equals(userId)) {
+                shopingCart.setQuantity(quantity);
+                shopingCartService.save(shopingCart);
+            }
+        }
+        return "redirect:/user/cart";
+    }
 }

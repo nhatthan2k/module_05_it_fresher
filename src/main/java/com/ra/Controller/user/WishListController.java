@@ -44,6 +44,6 @@ public class WishListController {
     public String delete(@PathVariable("id") Long wishListId) {
         Long userId = getUserId();
         wishListService.delete(wishListId, userId);
-        return "redirect://user/wish-list";
+        return "redirect:/user/wish-list";
     }
 }
