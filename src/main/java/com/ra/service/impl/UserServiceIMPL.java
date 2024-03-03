@@ -1,6 +1,5 @@
 package com.ra.service.impl;
 
-import com.ra.model.dto.request.UserRegister;
 import com.ra.model.entity.ERoles;
 import com.ra.model.entity.Roles;
 import com.ra.model.entity.Users;
@@ -74,24 +73,25 @@ public class UserServiceIMPL implements UserService {
     }
 
     @Override
-    public Users updateAcc(UserRegister userRegister, Long id) {
-        if (userRepository.existsByUsername(userRegister.getUsername())) {
-            throw new RuntimeException("username is exists");
-        }
-
+    public Users updateAcc(Users user, Long id) {
         Users userOld = findById(id);
+        if(!user.getUsername().equals(userOld.getUsername())) {
+            if (userRepository.existsByUsername(user.getUsername())) {
+                throw new RuntimeException("username is exists");
+            }
+        }
 
         Set<Roles> roles = userOld.getRoles();
 
         Users users = Users.builder()
                 .id(id)
-                .fullName(userRegister.getFullName())
-                .username(userRegister.getUsername())
+                .fullName(user.getFullName())
+                .username(user.getUsername())
                 .password(userOld.getPassword())
-                .email(userRegister.getEmail())
-                .avatar(userRegister.getAvatar())
-                .phone(userRegister.getPhone())
-                .address(userRegister.getAddress())
+                .email(user.getEmail())
+                .avatar(user.getAvatar())
+                .phone(user.getPhone())
+                .address(user.getAddress())
                 .created(userOld.getCreated())
                 .updated(new Date(new java.util.Date().getTime()))
                 .status(true)

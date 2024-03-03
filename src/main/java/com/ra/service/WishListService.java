@@ -9,4 +9,5 @@ public interface WishListService {
     WishList add(Long userId, WishListRequest wishListRequest);
     List<WishList> getAll(Long userId);
     void delete(Long wishListId, Long userId);
+    WishList findByUserandProduct(Long userId, Long productId);
 }

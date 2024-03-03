@@ -48,4 +48,9 @@ public class WishListServiceIMPL implements WishListService {
     public void delete(Long wishListId, Long userId) {
         wishListRepository.deleteByIdAndUserId(wishListId, userId);
     }
+
+    @Override
+    public WishList findByUserandProduct(Long userId, Long productId) {
+        return wishListRepository.findByUserandProduct(userId, productId);
+    }
 }

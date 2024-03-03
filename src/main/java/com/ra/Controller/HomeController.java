@@ -1,5 +1,6 @@
 package com.ra.Controller;
 
+import com.ra.model.dto.request.ShopingCartRequest;
 import com.ra.model.entity.Category;
 import com.ra.model.entity.Product;
 import com.ra.service.CategoryService;
@@ -22,8 +23,8 @@ public class HomeController {
     private ProductService productService;
 
     @GetMapping("/")
-    public String Home(Model model, HttpSession session) {
-        List<Category> categories = categoryService.findAll();
+    public String Home(HttpSession session) {
+        List<Category> categories = categoryService.getbyStatus();
         session.setAttribute("categories", categories);
         return "/index";
     }
@@ -33,5 +34,15 @@ public class HomeController {
         List<Product> products = productService.getByCategoryId(id);
         model.addAttribute("products", products);
         return "/shop/shop-4-column";
+    }
+
+    @GetMapping("/products/{id}")
+    public String singleProduct(Model model, @PathVariable("id") Long id) {
+        ShopingCartRequest shopingCartRequest = new ShopingCartRequest();
+        shopingCartRequest.setQuantity(1);
+        Product product = productService.findById(id);
+        model.addAttribute("product", product);
+        model.addAttribute("shopingCartRequest", shopingCartRequest);
+        return "/shop/single-product";
     }
 }

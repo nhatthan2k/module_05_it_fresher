@@ -16,7 +16,7 @@ public interface UserService {
     Users findById(Long id);
     void delete(Long id);
     Users save(Users users);
-    Users updateAcc(UserRegister userRegister, Long id);
+    Users updateAcc(Users user, Long id);
     Optional<Users> findByUsername(String username);
     List<Users> searchByName(String keyword);
 }

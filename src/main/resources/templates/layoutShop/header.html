@@ -16,7 +16,8 @@
                         <div class="ht-menu">
                             <ul>
                                 <li>
-                                    <a sec:authorize="isAuthenticated()" sec:authentication="principal.users.username" href="my-account.html"><i class="fa fa-user"x></i>My Account</a>
+                                    <a sec:authorize="isAuthenticated() and hasRole('ROLE_USER')" sec:authentication="principal.users.username" href="/user/account"><i class="fa fa-user"x></i></a>
+                                    <a sec:authorize="isAuthenticated() and hasRole('ROLE_ADMIN')" sec:authentication="principal.users.username" href="/admin"><i class="fa fa-user"x></i></a>
                                     <div sec:authorize="!isAuthenticated()">
                                         <a href="/login">Login</a>
                                         <a href="/register"></i>Register</a>
@@ -64,7 +65,7 @@
                 <div class="col-xl-7 col-lg-6 col-md-5 d-none d-lg-block">
                     <div class="header-search_area header-search_area-2">
                         <form action="#" class="header-search_box">
-                            <input class="jb-search_input" type="text" placeholder="Enter your search key ...">
+                            <input class="jb-search_input" type="text" placeholder="Enter your search key ..." style="width: 90%;">
                             <!--                                    <select class="nice-select select-search-category">-->
                             <!--                                        <option value="0">All Categories</option>-->
                             <!--                                        <option value="1">Fashion</option>-->
@@ -147,7 +148,7 @@
                 <div class="col-lg-3 col-md-5 order-2 order-md-1 order-sm-2 d-lg-none">
                     <div class="category-menu category-menu-hidden">
                         <div class="category-heading">
-                            <h2 class="categories-toggle"><span>Shop by categories</span></h2>
+                            <h2 class="categories-toggle"><span>categories</span></h2>
                         </div>
                         <div id="cate-toggle-2" class="category-menu-list">
                             <ul th:each="item : ${session.categories}">
@@ -269,7 +270,7 @@
                 <div class="col-lg-3 col-md-4">
                     <div class="category-menu category-menu-hidden">
                         <div class="category-heading">
-                            <h2 class="categories-toggle"><span>Shop by categories</span></h2>
+                            <h2 class="categories-toggle"><span>categories</span></h2>
                         </div>
                         <div id="cate-toggle" class="category-menu-list">
                             <ul th:each="item : ${session.categories}">
