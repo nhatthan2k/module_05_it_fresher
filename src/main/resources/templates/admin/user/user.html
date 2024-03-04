@@ -46,7 +46,7 @@
                             <tr th:each="item:${users}">
                                 <td th:text="${item.getId()}"></td>
                                 <td th:text="${item.getUsername()}"></td>
-                                <td><img th:src="${item.getAvatar()}" width="80px"></td>
+                                <td><img th:src="@{|/uploads/${item.avatar}|}" width="80px"></td>
                                 <td th:text="${item.getFullName()}"></td>
                                 <td th:text="${item.getEmail()}"></td>
                                 <td th:text="${item.getPhone()}"></td>

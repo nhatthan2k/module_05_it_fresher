@@ -26,23 +26,23 @@
                             <div class="row my-3">
                                 <div class="col-md-6 col-12 mb-3">
                                     <label class="form-label">Email Address</label>
-                                    <input type="text" class="form-control" th:value="${order.user.email}" disabled readonly>
+                                    <input type="text" class="form-control" th:value="${order.users.email}" disabled readonly>
                                 </div>
                                 <div class="col-md-6 col-12 mb-3">
                                     <label class="form-label">Full Name</label>
-                                    <input type="text" class="form-control" th:value="${order.orderCustomerName}" disabled readonly>
+                                    <input type="text" class="form-control" th:value="${order.receiveName}" disabled readonly>
                                 </div>
                                 <div class="col-md-6 col-12 mb-3">
                                     <label class="form-label">Phone Number</label>
-                                    <input type="text" class="form-control" th:value="${order.phoneNumber}" disabled readonly>
+                                    <input type="text" class="form-control" th:value="${order.receivePhone}" disabled readonly>
                                 </div>
                                 <div class="col-md-6 col-12 mb-3">
                                     <label class="form-label">Created Date</label>
-                                    <input type="text" class="form-control" th:value="${order.created_date}" disabled readonly>
+                                    <input type="text" class="form-control" th:value="${order.created}" disabled readonly>
                                 </div>
                                 <div class="col-md-12 mb-3">
                                     <label class="form-label">Shipping Address</label>
-                                    <textarea class="form-control"  th:text="${order.address}" rows="2" disabled readonly></textarea>
+                                    <textarea class="form-control"  th:text="${order.receiveAddress}" rows="2" disabled readonly></textarea>
                                 </div>
                                 <div class="col-md-6 col-12 mb-3">
                                     <label class="form-label">Note</label>
@@ -50,11 +50,11 @@
                                 </div>
                                 <div class="col-md-6 col-12 mb-3">
                                     <label class="form-label">Total</label>
-                                    <input type="text" class="form-control" th:value="${#numbers.formatDecimal(order.total, 0, 'COMMA', 0, 'POINT') + ' VND'}" disabled readonly>
+                                    <input type="text" class="form-control" th:value="${#numbers.formatDecimal(order.price, 0, 'COMMA', 0, 'POINT') + ' VND'}" disabled readonly>
                                 </div>
                                 <div class="box-footer d-flex justify-content-center gap-3" th:if="${order.status == 0}">
-                                    <a type="button" class="btn btn-outline-success" th:href="@{/admin/orders/accept/{id}(id = ${order.orderId})}">Accept</a>
-                                    <a type="button" class="btn btn-outline-danger" th:href="@{/admin/orders/cancel/{id}(id = ${order.orderId})}">Denide</a>
+                                    <a type="button" class="btn btn-outline-success" th:href="@{/admin/orders/accept/{id}(id = ${order.id})}">Accept</a>
+                                    <a type="button" class="btn btn-outline-danger" th:href="@{/admin/orders/cancel/{id}(id = ${order.id})}">Denide</a>
                                 </div>
                             </div>
                         </div>
@@ -73,12 +73,12 @@
                             </tr>
                             </thead>
                             <tbody id="orders">
-                            <tr th:each="item:${orderDetailList}">
-                                <td th:text="${item.product.productId}"></td>
+                            <tr th:each="item:${orderDetails}">
+                                <td th:text="${item.product.id}"></td>
                                 <td>
-                                    <img th:src="${item.product.imageUrl}" width="80px" th:alt="${item.product.imageUrl}">
+                                    <img th:src="@{|/uploads/${item.product.image}|}" width="80px" th:alt="${item.product.image}">
                                 </td>
-                                <td th:text="${item.product.productName}"></td>
+                                <td th:text="${item.product.name}"></td>
                                 <td th:text="${#numbers.formatDecimal(item.price, 0, 'COMMA', 0, 'POINT') + ' VND'}"></td>
                                 <td th:text="${item.quantity}"></td>
                                 <td th:text="${#numbers.formatDecimal((item.price*item.quantity), 0, 'COMMA', 0, 'POINT') + ' VND'}"></td>
