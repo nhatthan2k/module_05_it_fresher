@@ -24,7 +24,7 @@ public class UserController {
 
     @GetMapping("/user")
     public String userPage(Model model,
-        @RequestParam(defaultValue = "5", name = "limit") int limit,
+        @RequestParam(defaultValue = "12", name = "limit") int limit,
         @RequestParam(defaultValue = "0", name = "page") int page,
         @RequestParam(defaultValue = "id", name = "sort") String sort,
         @RequestParam(defaultValue = "asc", name = "order") String order

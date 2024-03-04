@@ -1,12 +1,12 @@
 package com.ra.Controller.user;
 
-import com.ra.model.dto.request.QuantityRequest;
 import com.ra.model.dto.request.ShopingCartRequest;
+import com.ra.model.entity.Orders;
 import com.ra.model.entity.Product;
 import com.ra.model.entity.ShopingCart;
+import com.ra.model.entity.Users;
 import com.ra.sercurity.UserDetail.UserPrincipal;
-import com.ra.service.ProductService;
-import com.ra.service.ShopingCartService;
+import com.ra.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -14,7 +14,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -24,7 +23,13 @@ public class CartController {
     private ShopingCartService shopingCartService;
 
     @Autowired
-    private ProductService productService;
+    private UserService userService;
+
+    @Autowired
+    private OrderService orderService;
+
+    @Autowired
+    private OrderDetailService orderDetailService;
 
     public static Long getUserId() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -95,6 +100,30 @@ public class CartController {
                 shopingCartService.save(shopingCart);
             }
         }
+        return "redirect:/user/cart";
+    }
+
+    @GetMapping("/checkout")
+    public String checkOut() {
+        Long userId = getUserId();
+        List<ShopingCart> shopingCarts = shopingCartService.getAll(userId);
+
+        Users user = userService.findById(userId);
+
+        double totalPrice = shopingCarts.stream()
+                .mapToDouble(shopingCart -> shopingCart.getProduct().getPrice() * shopingCart.getQuantity())
+                .sum();
+
+        Orders order = orderService.add(user, totalPrice);
+
+        for (ShopingCart shopingCart: shopingCarts) {
+            int orderQuantity = shopingCart.getQuantity();
+            Product product = shopingCart.getProduct();
+            orderDetailService.add(product, order, orderQuantity);
+        }
+
+        shopingCarts.forEach(shopingCart -> shopingCartService.delete(shopingCart.getId()));
+
         return "redirect:/user/cart";
     }
 }

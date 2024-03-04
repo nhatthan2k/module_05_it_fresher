@@ -55,7 +55,7 @@
                 <!-- Begin Header Middle Logo Area -->
                 <div class="col-lg-3 col-md-4 col-sm-6 col-6">
                     <div class="hm-logo">
-                        <a href="">
+                        <a href="/">
                             <img src="/fe/image/menu/logo/1.png" alt="JB's Header Logo">
                         </a>
                     </div>
@@ -64,8 +64,8 @@
                 <!-- Begin Header Search Area -->
                 <div class="col-xl-7 col-lg-6 col-md-5 d-none d-lg-block">
                     <div class="header-search_area header-search_area-2">
-                        <form action="#" class="header-search_box">
-                            <input class="jb-search_input" type="text" placeholder="Enter your search key ..." style="width: 90%;">
+                        <form class="header-search_box" th:action="@{/search}" method="get">
+                            <input class="jb-search_input" type="text" placeholder="Enter your search key ..." name="keyword" style="width: 90%;">
                             <button class="jb-search_btn" type="submit"><i class="fa fa-search"></i></button>
                         </form>
                     </div>
@@ -327,11 +327,11 @@
                 </div>
                 <!-- Header Middle Menu Area End Here -->
                 <!-- Begin Header Contact Information Area -->
-                <div class="col-lg-3">
-                    <div class="contact-info">
-                        <a href="tel://+123123321345"><i class="fa fa-phone-volume"></i> (080) 123 4567 890</a>
-                    </div>
-                </div>
+<!--                <div class="col-lg-3">-->
+<!--                    <div class="contact-info">-->
+<!--                        <a href="tel://+123123321345"><i class="fa fa-phone-volume"></i> (080) 123 4567 890</a>-->
+<!--                    </div>-->
+<!--                </div>-->
                 <!-- Header Contact Information Area End Here -->
             </div>
         </div>
