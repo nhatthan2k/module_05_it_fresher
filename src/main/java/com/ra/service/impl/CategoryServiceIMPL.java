@@ -17,7 +17,8 @@ public class CategoryServiceIMPL implements CategoryService {
     private CategoryRepository categoryRepository;
 
     @Override
-    public Page<Category> getAll(Pageable pageable) {
+    public Page<Category> getAll(Pageable pageable, String nameSearch) {
+        if (nameSearch!=null) return categoryRepository.findAllByNameContainingIgnoreCase(nameSearch, pageable);
         return categoryRepository.findAll(pageable);
     }
 
@@ -28,6 +29,15 @@ public class CategoryServiceIMPL implements CategoryService {
 
     @Override
     public Category save(Category category) {
+        return categoryRepository.save(category);
+    }
+
+    @Override
+    public Category save(CategoryRequest categoryRequest) {
+        Category category = new Category();
+        category.setName(categoryRequest.getName());
+        category.setDescription(categoryRequest.getDescription());
+        category.setStatus(categoryRequest.isStatus());
         return categoryRepository.save(category);
     }
 

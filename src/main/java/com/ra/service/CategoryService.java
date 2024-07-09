@@ -8,9 +8,10 @@ import org.springframework.data.domain.Pageable;
 import java.util.List;
 
 public interface CategoryService {
-    Page<Category> getAll(Pageable pageable);
+    Page<Category> getAll(Pageable pageable, String nameSearch);
     List<Category> findAll();
     Category save(Category category);
+    Category save(CategoryRequest categoryRequest);
     Category findById(Long id);
     void delete(Long id);
     List<Category> getbyStatus();
