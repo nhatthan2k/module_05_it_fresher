@@ -14,7 +14,7 @@ import java.util.List;
 public interface ProductRepository extends JpaRepository<Product, Long> {
     @Query("SELECT pro from Product pro WHERE pro.name like %?1% ")
     List<Product> findByNameOrDescription(String name, String description);
-    @Query("SELECT p from Product p WHERE p.name like ?1% ")
+    @Query("SELECT p from Product p WHERE p.name like %?1% ")
     List<Product> searchProductByName (String keyword);
     @Query("select p from Product p where p.category.status = :status")
     Page<Product> findByCategoryStatus(Pageable pageable, Boolean status);

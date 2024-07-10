@@ -34,20 +34,29 @@ public class ProductController {
 
     @GetMapping("/product")
     public String productPage(Model model,
-        @RequestParam(defaultValue = "12", name = "limit") int limit,
-        @RequestParam(defaultValue = "0", name = "page") int page,
-        @RequestParam(defaultValue = "id", name = "sort") String sort,
-        @RequestParam(defaultValue = "asc", name = "order") String order
+                              @RequestParam(defaultValue = "5", name = "limit") int limit,
+                              @RequestParam(defaultValue = "0", name = "page") int page,
+                              @RequestParam(defaultValue = "id", name = "sort") String sort,
+                              @RequestParam(defaultValue = "asc", name = "order") String order,
+                              @RequestParam(value = "nameSearch", required = false) String nameSearch
     ) {
         Pageable pageable;
         if (order.equals("asc")) {
             pageable = PageRequest.of(page, limit, Sort.by(sort).ascending());
-        }else {
+        } else {
             pageable = PageRequest.of(page, limit, Sort.by(sort).descending());
         }
 
-        Page<Product> products = productService.getAll(pageable);
+        if(nameSearch !=null && nameSearch.trim().isEmpty()){
+            nameSearch =null;
+        }
+
+        Page<Product> products = productService.getAll(pageable,nameSearch);
+        int currentPage = products.getNumber();
         model.addAttribute("products", products);
+        model.addAttribute("currentPage", currentPage);
+        model.addAttribute("totalPage", products.getTotalPages());
+        model.addAttribute("nameSearch",nameSearch);
         return "/admin/product/product";
     }
 
@@ -65,7 +74,7 @@ public class ProductController {
     public String save(@ModelAttribute("product") Product product, @RequestParam("imageProduct") MultipartFile file) {
         String fileName = file.getOriginalFilename();
         try {
-            FileCopyUtils.copy(file.getBytes(),new File(pathUpload+fileName));
+            FileCopyUtils.copy(file.getBytes(), new File(pathUpload + fileName));
             // lưu tên file vào database
             product.setImage(fileName);
         } catch (IOException e) {
@@ -89,7 +98,7 @@ public class ProductController {
     public String update(@ModelAttribute("product") Product product, @RequestParam("imageProduct") MultipartFile file) {
         String fileName = file.getOriginalFilename();
         try {
-            FileCopyUtils.copy(file.getBytes(),new File(pathUpload+fileName));
+            FileCopyUtils.copy(file.getBytes(), new File(pathUpload + fileName));
             // lưu tên file vào database
             product.setImage(fileName);
         } catch (IOException e) {
@@ -99,7 +108,7 @@ public class ProductController {
         return "redirect:/admin/product";
     }
 
-    @GetMapping ("/product/search")
+    @GetMapping("/product/search")
     public String searchByName(@RequestParam("nameSearch") String keyword, Model model) {
         List<Product> products = productService.searchByName(keyword);
         model.addAttribute("products", products);
@@ -107,7 +116,7 @@ public class ProductController {
     }
 
     @GetMapping("/product/delete/{id}")
-    public String delete(@PathVariable("id") Long id){
+    public String delete(@PathVariable("id") Long id) {
         productService.delete(id);
         return "redirect:/admin/product";
     }
