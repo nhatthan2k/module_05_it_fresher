@@ -37,8 +37,8 @@ public class Product {
 
     private String image;
 
-    @ManyToOne
-    @JoinColumn(name = "category_id", referencedColumnName = "category_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "category_id")
     private Category category;
 
     @OneToMany(mappedBy = "product")

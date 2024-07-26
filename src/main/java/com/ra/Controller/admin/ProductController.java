@@ -1,9 +1,11 @@
 package com.ra.Controller.admin;
 
+import com.ra.model.dto.request.ProductRequest;
 import com.ra.model.entity.Category;
 import com.ra.model.entity.Product;
 import com.ra.service.CategoryService;
 import com.ra.service.ProductService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -13,6 +15,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.FileCopyUtils;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -62,28 +65,46 @@ public class ProductController {
 
     //  add product
     @GetMapping("/product/add-product")
-    public String add(Model model) {
-        List<Category> categories = categoryService.getbyStatus();
-        model.addAttribute("categories", categories);
-        Product product = new Product();
-        model.addAttribute("product", product);
+    public String showAddProductForm(Model model) {
+        model.addAttribute("product", new ProductRequest());
+        model.addAttribute("categories", categoryService.findAll());
         return "/admin/product/add-product";
     }
 
     @PostMapping("/product/add-product")
-    public String save(@ModelAttribute("product") Product product, @RequestParam("imageProduct") MultipartFile file) {
-        String fileName = file.getOriginalFilename();
+    public String saveProduct(@Valid @ModelAttribute("product") ProductRequest productRequest,
+                              BindingResult bindingResult,
+                              @RequestParam("imageProduct") MultipartFile file,
+                              Model model) {
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("categories", categoryService.findAll());
+            return "/admin/product/add-product";
+        }
+
         try {
-            FileCopyUtils.copy(file.getBytes(), new File(pathUpload + fileName));
-            // lưu tên file vào database
-            product.setImage(fileName);
+            String fileName = file.getOriginalFilename();
+            File uploadDir = new File(pathUpload);
+
+            // Kiểm tra và tạo thư mục nếu nó không tồn tại
+            if (!uploadDir.exists()) {
+                uploadDir.mkdirs();
+            }
+
+            File destinationFile = new File(pathUpload + fileName);
+            file.transferTo(destinationFile);
+            // Lưu tên file vào database
+            productRequest.setImage(fileName);
+
+            productService.save(productRequest);
+            return "redirect:/admin/product";
         } catch (IOException e) {
             throw new RuntimeException(e);
+        } catch (IllegalArgumentException e) {
+            model.addAttribute("err", e.getMessage());
+            model.addAttribute("categories", categoryService.findAll());
+            return "/admin/product/add-product";
         }
-        productService.save(product);
-        return "redirect:/admin/product";
     }
-
     //  edit Category
     @GetMapping("/product/edit-product/{id}")
     public String edit(Model model, @PathVariable("id") Long id) {
@@ -95,7 +116,7 @@ public class ProductController {
     }
 
     @PostMapping("/product/edit-product")
-    public String update(@ModelAttribute("product") Product product, @RequestParam("imageProduct") MultipartFile file) {
+    public String update(@ModelAttribute("product") ProductRequest product, @RequestParam("imageProduct") MultipartFile file) {
         String fileName = file.getOriginalFilename();
         try {
             FileCopyUtils.copy(file.getBytes(), new File(pathUpload + fileName));

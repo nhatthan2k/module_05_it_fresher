@@ -80,7 +80,24 @@
                                     </td>
                                 </tr>
                             </tbody>
-
+                            <nav aria-label="Page navigation example" th:if="${totalPage > 1}">
+                                <ul class="pagination float-end mx-4">
+                                    <li class="page-item" th:classappend="${currentPage == 0 ? 'disabled' : ''}">
+                                        <a class="page-link"
+                                           th:href="@{'/admin/orders'(page=${currentPage > 0 ? currentPage - 1 : 0}, nameSearch=${nameSearch})}">Previous</a>
+                                    </li>
+                                    <li class="page-item" th:each="i : ${#numbers.sequence(1, totalPage)}"
+                                        th:classappend="${i == currentPage + 1 ? 'active' : ''}">
+                                        <a class="page-link"
+                                           th:href="@{'/admin/orders'(page=${i - 1}, nameSearch=${nameSearch})}"
+                                           th:text="${i}"></a>
+                                    </li>
+                                    <li class="page-item" th:classappend="${currentPage == totalPage - 1 ? 'disabled' : ''}">
+                                        <a class="page-link"
+                                           th:href="@{'/admin/orders'(page=${currentPage < totalPage - 1 ? currentPage + 1 : totalPage - 1}, nameSearch=${nameSearch})}">Next</a>
+                                    </li>
+                                </ul>
+                            </nav>
                         </table>
                     </div>
                     <!-- /.card-body -->

@@ -18,7 +18,7 @@ public class CategoryServiceIMPL implements CategoryService {
 
     @Override
     public Page<Category> getAll(Pageable pageable, String nameSearch) {
-        if (nameSearch!=null) return categoryRepository.findAllByNameContainingIgnoreCase(nameSearch, pageable);
+        if (nameSearch != null) return categoryRepository.findAllByNameContainingIgnoreCase(nameSearch, pageable);
         return categoryRepository.findAll(pageable);
     }
 
@@ -34,11 +34,18 @@ public class CategoryServiceIMPL implements CategoryService {
 
     @Override
     public Category save(CategoryRequest categoryRequest) {
+
+        if (categoryRepository.existsByName(categoryRequest.getName())) {
+            throw new IllegalArgumentException("Tên danh mục đã tồn tại, vui lòng nhập tên danh mục khác!");
+        }
+
         Category category = new Category();
         category.setName(categoryRequest.getName());
         category.setDescription(categoryRequest.getDescription());
         category.setStatus(categoryRequest.isStatus());
+
         return categoryRepository.save(category);
+
     }
 
     @Override

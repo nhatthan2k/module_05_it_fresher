@@ -44,10 +44,12 @@ public class WebSecurityConfig {
                         .loginProcessingUrl("/login")
                         .usernameParameter("username")
                         .passwordParameter("password")
-//                        .defaultSuccessUrl("/admin", true)
                         .successHandler(roleBasedAuthenticationSuccessHandler())
                 )
-                .logout(logout -> logout.logoutUrl("/logout").logoutSuccessUrl("/login"))
+                .logout(logout -> logout
+                        .logoutUrl("/logout")
+                        .logoutSuccessUrl("/login?logout")
+                )
                 .build();
     }
 

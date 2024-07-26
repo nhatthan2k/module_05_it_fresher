@@ -11,8 +11,9 @@ import lombok.NoArgsConstructor;
 @Data
 @Builder
 public class CategoryRequest {
-    @NotBlank(message = "CategoryName không được trống")
+    @NotBlank(message = "CategoryName không được trống!")
     private String name;
+    @NotBlank(message = "Hãy nhập mô tả danh mục!")
     private String description;
     private boolean status;
 }

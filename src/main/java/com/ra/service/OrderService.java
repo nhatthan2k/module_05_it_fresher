@@ -2,12 +2,15 @@ package com.ra.service;
 
 import com.ra.model.entity.EOrderStatus;
 import com.ra.model.entity.Orders;
+import com.ra.model.entity.Product;
 import com.ra.model.entity.Users;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
 public interface OrderService {
-    List<Orders> findAll();
+    Page<Orders> findAll(Pageable pageable, String nameSearch);
     List<Orders> getAll(Long userId);
     Orders add(Users users, Double totalPrice);
     Orders getbySerial(Long userId, String serial);
@@ -15,4 +18,5 @@ public interface OrderService {
     Orders save(Orders orders);
     Orders findById(Long id);
     Orders getByIdAndStatus(Long userId, Long orderId, EOrderStatus status);
+    List<Orders> searchOrdersByReceiveName(String keyword);
 }

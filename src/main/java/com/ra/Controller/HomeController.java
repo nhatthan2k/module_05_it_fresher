@@ -1,6 +1,7 @@
 package com.ra.Controller;
 
 import com.ra.model.dto.request.ShopingCartRequest;
+import com.ra.model.dto.request.ShoppingCartItemRequest;
 import com.ra.model.entity.Category;
 import com.ra.model.entity.Product;
 import com.ra.service.CategoryService;
@@ -49,19 +50,36 @@ public class HomeController {
     }
 
     @GetMapping("/categories/{id}")
-    public String CategoryShop(Model model,@PathVariable("id") Long id) {
-        List<Product> products = productService.getByCategoryId(id);
-        model.addAttribute("products", products);
+    public String CategoryShop(Model model,@PathVariable("id") Long id,
+                               @RequestParam(defaultValue = "12", name = "limit") int limit,
+                               @RequestParam(defaultValue = "0", name = "page") int page,
+                               @RequestParam(defaultValue = "id", name = "sort") String sort,
+                               @RequestParam(defaultValue = "asc", name = "order") String order) {
+        Pageable pageable;
+        if ("asc".equals(order)) {
+            pageable = PageRequest.of(page, limit, Sort.by(sort).ascending());
+        } else {
+            pageable = PageRequest.of(page, limit, Sort.by(sort).descending());
+        }
+
+        Page<Product> productsPage = productService.getByCategoryId(id,pageable);
+        model.addAttribute("products", productsPage.getContent());
+        model.addAttribute("totalPages", productsPage.getTotalPages());
+        model.addAttribute("currentPage", page);
         return "/shop/shop-4-column";
     }
 
     @GetMapping("/products/{id}")
     public String singleProduct(Model model, @PathVariable("id") Long id) {
-        ShopingCartRequest shopingCartRequest = new ShopingCartRequest();
+        ShoppingCartItemRequest shopingCartRequest = new ShoppingCartItemRequest();
         shopingCartRequest.setQuantity(1);
         Product product = productService.findById(id);
+        Page<Product> relatedProducts = productService.getByCategoryId(product.getCategory().getId(),Pageable.unpaged());
+        int count = productService.countByCategory(product.getCategory());
         model.addAttribute("product", product);
         model.addAttribute("shopingCartRequest", shopingCartRequest);
+        model.addAttribute("relatedProducts", relatedProducts);
+        model.addAttribute("count", count);
         return "/shop/single-product";
     }
 

@@ -78,4 +78,7 @@ public class Users {
     @OneToMany(mappedBy = "users")
     @JsonIgnore
     List<WishList> wishLists;
+
+    public <T> void setRoles() {
+    }
 }

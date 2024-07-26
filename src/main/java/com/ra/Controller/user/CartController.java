@@ -1,6 +1,7 @@
 package com.ra.Controller.user;
 
 import com.ra.model.dto.request.ShopingCartRequest;
+import com.ra.model.dto.request.ShoppingCartItemRequest;
 import com.ra.model.entity.Orders;
 import com.ra.model.entity.Product;
 import com.ra.model.entity.ShopingCart;
@@ -8,11 +9,14 @@ import com.ra.model.entity.Users;
 import com.ra.sercurity.UserDetail.UserPrincipal;
 import com.ra.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
@@ -55,7 +59,7 @@ public class CartController {
         Long userId = getUserId();
         ShopingCart shopingCart = shopingCartService.findByProductId(userId, id);
         if (shopingCart == null) {
-            ShopingCartRequest shopingCartRequest = new ShopingCartRequest();
+            ShoppingCartItemRequest shopingCartRequest = new ShoppingCartItemRequest();
             shopingCartRequest.setProductId(id);
             shopingCartRequest.setQuantity(1);
             shopingCartService.add(shopingCartRequest, userId);
@@ -67,7 +71,7 @@ public class CartController {
     }
 
     @PostMapping("/add-cart/{id}")
-    public String createCart(@PathVariable("id") Long id, @ModelAttribute("shopingCartRequest") ShopingCartRequest shopingCartRequest) {
+    public String createCart(@PathVariable("id") Long id, @ModelAttribute("shopingCartRequest") ShoppingCartItemRequest shopingCartRequest) {
         Long userId = getUserId();
         ShopingCart shopingCart = shopingCartService.findByProductId(userId, id);
         if (shopingCart == null) {
@@ -81,28 +85,36 @@ public class CartController {
     }
 
     @GetMapping("/delete/{id}")
-    public String deleteCart(@PathVariable("id") Long id) {
+    public String deleteCart(@PathVariable("id") Long id, RedirectAttributes redirectAttributes) {
         Long userId = getUserId();
         ShopingCart shopingCart = shopingCartService.findByProductId(userId, id);
         if (shopingCart != null) {
             shopingCartService.delete(shopingCart.getId());
+            redirectAttributes.addFlashAttribute("error", "Xoá giỏ hàng thành công!");
         }
         return "redirect:/user/cart";
     }
 
-    @PostMapping("/edit-cart/{id}")
-    public String editCart(@PathVariable("id") int id, @RequestParam("quantity") int quantity) {
+    @PostMapping("/update/{cartId}")
+    public String editCart(@PathVariable("cartId") int id, @RequestParam("quantity") int quantity, RedirectAttributes redirectAttributes) {
         Long userId = getUserId();
         ShopingCart shopingCart = shopingCartService.findById(id);
-        if(shopingCart != null) {
-            if(shopingCart.getUsers().getId().equals(userId)) {
+
+        if (shopingCart != null) {
+            if (shopingCart.getUsers().getId().equals(userId)) {
                 shopingCart.setQuantity(quantity);
                 shopingCartService.save(shopingCart);
+                redirectAttributes.addFlashAttribute("message", "Cập nhật giỏ hàng thành công");
+                return "redirect:/user/cart";
+            } else {
+                redirectAttributes.addFlashAttribute("error", "Không được phép cập nhật giỏ hàng của người khác");
+                return "redirect:/user/cart";
             }
+        } else {
+            redirectAttributes.addFlashAttribute("error", "Không tìm thấy giỏ hàng");
+            return "redirect:/user/cart";
         }
-        return "redirect:/user/cart";
     }
-
     @GetMapping("/checkout")
     public String checkOut() {
         Long userId = getUserId();
@@ -124,6 +136,17 @@ public class CartController {
 
         shopingCarts.forEach(shopingCart -> shopingCartService.delete(shopingCart.getId()));
 
-        return "redirect:/user/cart";
+        return "redirect:/user/checkout";
+    }
+    @GetMapping("/checkoutCart")
+    public String checkoutCart(Model model){
+        Long userId = getUserId();
+        List<ShopingCart> shoppingCart = shopingCartService.getAll(userId);
+        Users users = userService.findById(userId);
+        double total = shoppingCart.stream().mapToDouble(shoppingCarts->shoppingCarts.getProduct().getPrice()*shoppingCarts.getQuantity()).sum();
+        model.addAttribute("shoppingCart", shoppingCart);
+        model.addAttribute("user", users);
+        model.addAttribute("total",total);
+        return "shop/checkout";
     }
 }

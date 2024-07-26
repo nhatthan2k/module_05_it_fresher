@@ -53,32 +53,45 @@
                     <!--    Register    -->
                     <div class="col-sm-12 col-md-12 col-lg-6 col-xs-12">
                         <form th:action="@{/register}" method="post" th:object="${user}">
+                            <div class="alert alert-danger" role="alert" th:if="${err != null}">
+                                <strong><span th:text="${err}"></span></strong>
+                            </div>
                             <div class="login-form">
                                 <h4 class="login-title">Register</h4>
                                 <div class="row" >
                                     <div class="col-md-12">
                                         <label>Fullname</label>
                                         <input type="text" placeholder="Full Name" th:field="*{fullName}">
+                                        <small class="form-text text-danger"  th:errors="*{fullName}"></small>
                                     </div>
                                     <div class="col-md-12">
                                         <label>Username</label>
                                         <input type="text" placeholder="User Name" th:field="*{username}">
+                                        <small class="form-text text-danger" th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></small>
                                     </div>
                                     <div class="col-md-12">
                                         <label>Email Address*</label>
                                         <input type="email" placeholder="Email Address" th:field="*{email}">
+                                        <small class="form-text text-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></small>
+
                                     </div>
                                     <div class="col-md-12">
                                         <label>Password</label>
                                         <input type="password" placeholder="Password" th:field="*{password}">
+                                        <small class="form-text text-danger"  th:errors="*{password}"></small>
+
                                     </div>
                                     <div class="col-md-12">
                                         <label>Phone</label>
-                                        <input type="number" placeholder="Phone" th:field="*{phone}">
+                                        <input type="number" placeholder="Phone" th:field="*{phone}" >
+                                        <small class="form-text text-danger"  th:errors="*{phone}"></small>
+
                                     </div>
                                     <div class="col-md-12">
                                         <label>Address</label>
                                         <input type="text" placeholder="Address" th:field="*{address}">
+                                        <small class="form-text text-danger"  th:errors="*{address}"></small>
+
                                     </div>
                                     <div class="col-12">
                                         <button type="submit" class="jb-register_btn">Register</button>
@@ -101,6 +114,7 @@
     <script src="/fe/js/plugins.min.js"></script>
     <script src="/fe/js/ajax-mail.js"></script>
     <script src="/fe/js/main.js"></script>
+
 </body>
 
 

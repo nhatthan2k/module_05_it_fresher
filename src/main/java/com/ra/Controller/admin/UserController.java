@@ -24,20 +24,27 @@ public class UserController {
 
     @GetMapping("/user")
     public String userPage(Model model,
-        @RequestParam(defaultValue = "12", name = "limit") int limit,
-        @RequestParam(defaultValue = "0", name = "page") int page,
-        @RequestParam(defaultValue = "id", name = "sort") String sort,
-        @RequestParam(defaultValue = "asc", name = "order") String order
+                           @RequestParam(defaultValue = "3", name = "limit") int limit,
+                           @RequestParam(defaultValue = "0", name = "page") int page,
+                           @RequestParam(defaultValue = "id", name = "sort") String sort,
+                           @RequestParam(defaultValue = "asc", name = "order") String order,
+                           @RequestParam(value = "nameSearch",required = false) String nameSearch
+
     ) {
         Pageable pageable;
         if (order.equals("asc")) {
             pageable = PageRequest.of(page, limit, Sort.by(sort).ascending());
-        }else {
+        } else {
             pageable = PageRequest.of(page, limit, Sort.by(sort).descending());
         }
 
         Page<Users> users = userService.getAll(pageable);
+        int currentPage = users.getNumber();
         model.addAttribute("users", users);
+        model.addAttribute("currentPage",currentPage);
+        model.addAttribute("totalPage", users.getTotalPages());
+        model.addAttribute("nameSearch", nameSearch);
+
         return "/admin/user/user";
     }
 
@@ -49,7 +56,7 @@ public class UserController {
         return "redirect:/admin/user";
     }
 
-    @GetMapping ("/user/search")
+    @GetMapping("/user/search")
     public String searchByName(@RequestParam("nameSearch") String keyword, Model model) {
         List<Users> users = userService.searchByName(keyword);
         model.addAttribute("users", users);

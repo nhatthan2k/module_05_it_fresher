@@ -23,22 +23,8 @@
                                         <a href="/register"></i>Register</a>
                                     </div>
                                 </li>
-                                <!-- Begin Currency Area -->
-                                <li><a href="javascript:void(0)">USD $<i class="fa fa-chevron-down"></i></a>
-                                    <ul class="ht-dropdown ht-currency">
-                                        <li><a href="javascript:void(0)">EUR €</a></li>
-                                        <li class="active"><a href="javascript:void(0)">USD $</a></li>
-                                    </ul>
-                                </li>
-                                <!-- Currency Area End Here -->
-                                <!-- Begin Language Area -->
-                                <li><a href="javascript:void(0)"><img src="/fe/image/menu/icon/1.jpg" alt="JB's Language Icon">English <i class="fa fa-chevron-down"></i></a>
-                                    <ul class="ht-dropdown">
-                                        <li class="active"><a href="javascript:void(0)"><img src="/fe/image/menu/icon/1.jpg" alt="JB's Language Icon">English</a></li>
-                                        <li><a href="javascript:void(0)"><img src="/fe/image/menu/icon/2.jpg" alt="JB's Language Icon">Français</a></li>
-                                    </ul>
-                                </li>
-                                <!-- Language Area End Here -->
+
+
                             </ul>
                         </div>
                     </div>
@@ -86,76 +72,47 @@
                 </div>
                 <!-- JB's Category Menu Area End Here -->
                 <!-- Begin Header Middle Minicart Area -->
-                <div class="col-lg-2 col-md-3 col-sm-6 col-6 order-1 order-lg-3 order-sm-1" style="margin: auto">
+                <div class="icon-inline">
                     <div class="hm-minicart_area">
                         <ul>
                             <li>
                                 <a href="/user/cart">
-                                    <div class="minicart-icon">
+                                    <div class="minicart-icon bg-blue">
                                         <i class="fa fa-shopping-cart"></i>
-<!--                                        <span class="item-count"></span>-->
                                     </div>
-                                    <div class="minicart-text"><span>My Cart</span></div>
-<!--                                    <div class="item_total"><span></span></div>-->
                                 </a>
-<!--                                <ul class="minicart-body">-->
-<!--                                    <li class="minicart-item_area">-->
-<!--                                        <div class="minicart-single_item">-->
-<!--                                            <div class="minicart-img">-->
-<!--                                                <a href="single-product.html">-->
-<!--                                                    <img src="/fe/image/product/small-size/1.jpg" alt="JB's Product Image">-->
-<!--                                                </a>-->
-<!--                                                <span class="product-quantity">1x</span>-->
-<!--                                            </div>-->
-<!--                                            <div class="minicart-content">-->
-<!--                                                <div class="product-name">-->
-<!--                                                    <h6>-->
-<!--                                                        <a href="single-product.html">-->
-<!--                                                            Xail 9.7" 128GB iPad - Silver MP2J2LL/A-->
-<!--                                                        </a>-->
-<!--                                                    </h6>-->
-<!--                                                </div>-->
-<!--                                                <div class="price-box">-->
-<!--                                                    <span class="new-price">$29.00</span>-->
-<!--                                                </div>-->
-<!--                                                <div class="attributes_content">-->
-<!--                                                    <span>Dimension: 40x60cm</span>-->
-<!--                                                </div>-->
-<!--                                            </div>-->
-<!--                                        </div>-->
-<!--                                    </li>-->
-<!--                                    <li class="minicart-item_area">-->
-<!--                                        <div class="minicart-single_item">-->
-<!--                                            <div class="minicart-img">-->
-<!--                                                <a href="single-product.html">-->
-<!--                                                    <img src="/fe/image/product/small-size/2.jpg" alt="JB's Product Image">-->
-<!--                                                </a>-->
-<!--                                                <span class="product-quantity">1x</span>-->
-<!--                                            </div>-->
-<!--                                            <div class="minicart-content">-->
-<!--                                                <div class="product-name">-->
-<!--                                                    <h6>-->
-<!--                                                        <a href="single-product.html">-->
-<!--                                                            Xail 12.2" Pentium, 4GB, 64GB SSD, W10 Touchscreen-->
-<!--                                                        </a>-->
-<!--                                                    </h6>-->
-<!--                                                </div>-->
-<!--                                                <div class="price-box">-->
-<!--                                                    <span class="new-price">$18.90</span>-->
-<!--                                                </div>-->
-<!--                                                <div class="attributes_content">-->
-<!--                                                    <span>Color: White</span>-->
-<!--                                                </div>-->
-<!--                                            </div>-->
-<!--                                        </div>-->
-<!--                                    </li>-->
-<!--                                    <li>-->
-<!--                                        <div class="price_content">-->
-<!--                                            <div class="cart-subtotals">-->
-<!--                                                <div class="products subtotal-list">-->
-<!--                                                    <span class="label">Subtotal</span>-->
-<!--                                                    <span class="value">$47.90</span>-->
-<!--                                                </div>-->
+
+                                <ul  class="minicart-body">
+
+                                    <li  class="minicart-item_area">
+                                        <div class="minicart-single_item" th:each="item, stat : ${shopingCarts}">
+                                            <div class="minicart-img">
+                                                <a class="mini-img">
+                                                    <img th:src="@{|/uploads/${item.product.image}|}"  alt="JB's Product Image">
+                                                </a>
+                                                <span class="product-quantity" th:text="${item.quantity} + 'x'"></span>
+                                            </div>
+                                            <div class="minicart-content">
+                                                <div class="product-name">
+                                                    <h6>
+                                                        <a href="single-product.html" th:text="${item.product.name}">
+                                                        </a>
+                                                    </h6>
+                                                </div>
+                                                <div class="price-box">
+                                                    <span class="new-price" th:value="${item.product.price}"></span>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="price_content">
+                                            <div class="cart-subtotals">
+                                                <div class="products subtotal-list">
+                                                    <span class="label" >Subtotal</span>
+                                                    <span class="value" th:text="${total}"></span>
+                                                </div>
 <!--                                                <div class="shipping subtotal-list">-->
 <!--                                                    <span class="label">Shipping</span>-->
 <!--                                                    <span class="value">$7.00</span>-->
@@ -168,23 +125,34 @@
 <!--                                                    <span class="label">Total</span>-->
 <!--                                                    <span class="value">$54.90</span>-->
 <!--                                                </div>-->
-<!--                                            </div>-->
-<!--                                            <div class="minicart-button">-->
-<!--                                                <a class="jb-btn jb-btn_fullwidth" href="checkout.html">Checkout</a>-->
-<!--                                            </div>-->
-<!--                                        </div>-->
-<!--                                    </li>-->
-<!--                                </ul>-->
+                                            </div>
+                                            <div class="minicart-button">
+                                                <a class="jb-btn jb-btn_fullwidth" th:href="@{/user/cart/checkoutCart}">Checkout</a>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
                             </li>
                         </ul>
                     </div>
                     <!-- Begin JB's Offcanvas Area -->
-                    <a href="#" class="menu-btn color--white">
-                        <i class="fa fa-bars"></i>
-                    </a>
+                    <div class="hm-minicart_area">
+                        <a href="/user/wish-list">
+                            <ul>
+                                <li>
+                                    <div class="minicart-icon">
+                                        <i class="fa fa-heart"></i>
+                                    </div>
+                                </li>
+                            </ul>
+
+                        </a>
+
+                    </div>
                     <!-- JB's Offcanvas Area End Here -->
                 </div>
                 <!-- Header Middle Minicart Area End Here -->
+
             </div>
         </div>
     </div>

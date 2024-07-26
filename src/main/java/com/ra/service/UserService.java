@@ -11,7 +11,10 @@ import java.util.List;
 import java.util.Optional;
 
 public interface UserService {
-    Users handleRegister(Users user);
+
+
+    Users handleRegister(UserRegister userRegister);
+
     Page<Users> getAll(Pageable pageable);
     Users findById(Long id);
     void delete(Long id);

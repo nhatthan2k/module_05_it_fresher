@@ -12,7 +12,8 @@ import java.util.List;
 @Repository
 public interface CategoryRepository extends JpaRepository<Category, Long> {
     List<Category> findByStatus(boolean status);
-
+    boolean existsByName(String name);
+    boolean existsById(Long id);
     Page<Category> findAllByNameContainingIgnoreCase(String name, Pageable pageable);
     @Query("SELECT c from Category c WHERE c.name like ?1% ")
     List<Category> searchCategoriesByName(String keyword);

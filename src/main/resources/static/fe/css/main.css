@@ -1961,6 +1961,7 @@ button {
   margin-bottom: 60px;
 }
 
+
 /* ---JB's Product Tab Slider---*/
 @media only screen and (min-width: 768px) and (max-width: 991px) {
   .jb-product-tab_slider .slick-list,
@@ -3883,15 +3884,24 @@ li.right-menu .cat-mega-menu-3 > li {
 }
 
 /* ---Begin Header Middle Minicart Area--- */
+.icon-inline{
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
 .hm-minicart_area {
   float: right;
   position: relative;
 }
+.minicart-icon > i.fa-heart{
+  font-size: 25px;
+  color: #0084c5;
+}
+
 .hm-minicart_area > ul > li {
   width: 114px;
   text-align: center;
   padding: 12px 0;
-  background: #0084c5;
   display: inline-block;
 }
 @media (max-width: 575px) {
@@ -3915,7 +3925,7 @@ li.right-menu .cat-mega-menu-3 > li {
 }
 .hm-minicart_area > ul > li > a .minicart-icon {
   font-size: 25px;
-  color: #ffffff;
+  color: #0084c5;
 }
 @media (max-width: 575px) {
   .hm-minicart_area > ul > li > a .minicart-icon {
@@ -3980,6 +3990,7 @@ li.right-menu .cat-mega-menu-3 > li {
   top: 0;
   left: 0;
 }
+
 .hm-minicart_area > ul > li .minicart-body > li .minicart-single_item .minicart-content {
   overflow: hidden;
   padding-left: 15px;

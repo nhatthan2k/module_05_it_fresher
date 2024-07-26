@@ -11,6 +11,7 @@
     <link rel="stylesheet" type="text/css" media="screen" href="/fe/css/plugins.min.css"/>
     <link rel="stylesheet" type="text/css" media="screen" href="/fe/css/main.css"/>
     <link rel="shortcut icon" type="image/x-icon" href="/fe/image/favicon.ico">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
 </head>
 
 <body>
@@ -29,7 +30,7 @@
     </div>
     <!-- Loading Area End Here -->
 
-    <th:block th:insert="/layoutShop/header.html"></th:block>
+    <div th:insert="~{/layoutShop/header.html}"></div>
 
     <!-- Begin JB's Slider Area -->
     <div class="jb-slider_area jb-slider_area-2">
@@ -214,11 +215,14 @@
                                             </div>
                                             <div class="add-actions">
                                                 <ul>
-                                                    <li><a class="jb-wishlist_link"
-                                                           th:href="@{/user/wish-list/{productId}(productId=${item.id})}"><i
-                                                            class="fa fa-heart"></i></a></li>
-                                                    <li><a class="jb-add_cart"
-                                                           th:href="@{/user/cart/{productId}(productId=${item.id})}"><i
+                                                    <li>
+                                                        <a class="jb-wishlist_link" th:data-product-id="${item.id}"
+                                                           href="javascript:void(0)"
+                                                           onclick="handleWishListClick(this.getAttribute('data-product-id')) "><i
+                                                                class="fa fa-heart"></i></a></li>
+                                                    <li><a class="jb-add_cart" th:data-product-id="${item.id}"
+                                                           href="javascript:void(0)"
+                                                           onclick="handleCartClick(this.getAttribute('data-product-id'))"><i
                                                             class="icon_cart_alt"></i>Add to cart</a></li>
                                                     <li><a class="jb-sp_link"
                                                            th:href="@{/products/{productId}(productId=${item.id})}"><i
@@ -4378,193 +4382,7 @@
     </div>
     <!-- JB's Banner Four Columns Area End Here -->
 
-    <!-- Begin JB's Footer Area -->
-    <div class="jb-footer_area">
-        <!-- Begin JB's Footer Top Area -->
-        <div class="footer-top_area @@border">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div class="jb-newsletter_area">
-                            <div class="newsletter-content">
-                                <h2 class="newsletter-heading">Join Our</h2>
-                                <h3 class="newsletter-sub_heading">Newsletter Now!</h3>
-                                <p class="short-desc">Subscribe to the Jobaria mailing list to receive updates on new
-                                    arrivals,
-                                    offers and other discount information.</p>
-                                <div class="newsletter-form_wrap">
-                                    <form action="http://devitems.us11.list-manage.com/subscribe/post?u=6bbb9b6f5827bd842d9640c82&amp;id=05d85f18ef"
-                                          method="post" id="mc-embedded-subscribe-form"
-                                          name="mc-embedded-subscribe-form" class="newsletters-form validate"
-                                          target="_blank" novalidate>
-                                        <div id="mc_embed_signup_scroll">
-                                            <div id="mc-form" class="mc-form subscribe-form pt--15">
-                                                <input id="mc-email" type="email" autocomplete="off"
-                                                       placeholder="Enter your email address"/>
-                                                <button class="newsletter-btn" id="mc-submit">
-                                                    <i class="fas fa-paper-plane" aria-hidden="true"></i>
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- JB's Footer Top Area End Here -->
-        <!-- Begin JB's Footer Middle Area -->
-        <div class="footer-middle_area bg--nero">
-            <div class="container">
-                <div class="row">
-                    <!-- Begin Footer Widgets Information Area -->
-                    <div class="col-lg-4">
-                        <div class="footer-widgets_info">
-                            <div class="footer-widgets_logo">
-                                <a href="#">
-                                    <img src="/fe/image/footer/logo/1.png" alt="JB's Footer Logo">
-                                </a>
-                            </div>
-                            <div class="short-desc">
-                                <p>There are many variations of passages of Lorem Ipsum available, but the majorited
-                                    have
-                                    suffered alteration.</p>
-                            </div>
-                            <div class="widgets-essential_stuff">
-                                <ul>
-                                    <li class="jb-address"><span>Address:</span> 169-C, Technohub, Dubai Silicon Oasis.
-                                    </li>
-                                    <li class="jb-email"><span>Mail us:</span> <a href="mailto://info@yourdomain.com">info@yourdomain.com</a>
-                                    </li>
-                                    <li class="jb-phone"><span>Phone:</span> <a href="tel://+123123321345">+123 321
-                                        345</a>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="jb-social_link">
-                                <ul>
-                                    <li class="facebook">
-                                        <a href="https://www.facebook.com/" data-bs-toggle="tooltip" target="_blank"
-                                           title="Facebook">
-                                            <i class="fab fa-facebook"></i>
-                                        </a>
-                                    </li>
-                                    <li class="twitter">
-                                        <a href="https://twitter.com/" data-bs-toggle="tooltip" target="_blank"
-                                           title="Twitter">
-                                            <i class="fab fa-twitter-square"></i>
-                                        </a>
-                                    </li>
-                                    <li class="youtube">
-                                        <a href="https://www.youtube.com/" data-bs-toggle="tooltip" target="_blank"
-                                           title="Youtube">
-                                            <i class="fab fa-youtube"></i>
-                                        </a>
-                                    </li>
-                                    <li class="google-plus">
-                                        <a href="https://www.plus.google.com/discover" data-bs-toggle="tooltip"
-                                           target="_blank" title="Google Plus">
-                                            <i class="fab fa-google-plus"></i>
-                                        </a>
-                                    </li>
-                                    <li class="instagram">
-                                        <a href="https://rss.com/" data-bs-toggle="tooltip" target="_blank"
-                                           title="Instagram">
-                                            <i class="fab fa-instagram"></i>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Footer Widgets Information Area End Here -->
-                    <!-- Begin Footer Widgets With Banner Area -->
-                    <div class="col-lg-8">
-                        <div class="footer-widgets-with_banner">
-                            <div class="widgets-banner">
-                                <a href="#">
-                                    <img src="/fe/image/footer/widgets-banner.jpg" alt="Widgets Banner">
-                                </a>
-                            </div>
-                            <div class="row">
-                                <div class="col-lg-4 col-md-4 col-sm-6">
-                                    <div class="footer-widgets_title">
-                                        <h5>Products</h5>
-                                    </div>
-                                    <div class="footer-widgets">
-                                        <ul>
-                                            <li><a href="#">Legal Notice</a></li>
-                                            <li><a href="#">About Us</a></li>
-                                            <li><a href="#">Prices Drop</a></li>
-                                            <li><a href="#">New Products</a></li>
-                                            <li><a href="#">Best sales</a></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                                <div class="col-lg-4 col-md-4 col-sm-6">
-                                    <div class="footer-widgets_title">
-                                        <h5>Our Company</h5>
-                                    </div>
-                                    <div class="footer-widgets">
-                                        <ul>
-                                            <li><a href="#">Legal Notice</a></li>
-                                            <li><a href="#">About Us</a></li>
-                                            <li><a href="#">Contact Us</a></li>
-                                            <li><a href="#">Sitemap</a></li>
-                                            <li><a href="#">Stores</a></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                                <div class="col-lg-4 col-md-4 col-sm-6">
-                                    <div class="footer-widgets_title">
-                                        <h5>Your Account</h5>
-                                    </div>
-                                    <div class="footer-widgets">
-                                        <ul>
-                                            <li><a href="#">Personal Info</a></li>
-                                            <li><a href="#">Orders</a></li>
-                                            <li><a href="#">Credit Slips</a></li>
-                                            <li><a href="#">Addresses</a></li>
-                                            <li><a href="#">My Wishlists</a></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Footer Widgets With Banner Area End Here -->
-                </div>
-            </div>
-        </div>
-        <!-- JB's Footer Middle Area End Here -->
-        <!-- Begin JB's Footer Bottom Area -->
-        <div class="footer-bottom_area bg--night_rider">
-            <div class="container">
-                <div class="row">
-                    <!-- Begin Copyright Area -->
-                    <div class="col-lg-6 col-md-6">
-                        <div class="copyright">
-                            <span>Copyright &copy; 2022 <a href="#">Jobaria.</a> All rights reserved.</span>
-                        </div>
-                    </div>
-                    <!-- Copyright Area End Here -->
-                    <!-- Begin Copyright Area -->
-                    <div class="col-lg-6 col-md-6">
-                        <div class="payment">
-                            <a href="#">
-                                <img src="/fe/image/footer/payment.png" alt="JB's Payment Method">
-                            </a>
-                        </div>
-                    </div>
-                    <!-- Copyright Area End Here -->
-                </div>
-            </div>
-        </div>
-        <!-- JB's Footer Bottom Area End Here -->
-    </div>
-    <!-- JB's Footer Area End Here -->
+    <div th:insert="~{/layoutShop/footer.html}"></div>
 
     <!-- Begin JB's Modal Area -->
     <div class="modal fade modal-wrapper" id="exampleModalCenter">
@@ -4693,11 +4511,93 @@
     </div>
     <!-- JB's Modal Area End Here -->
 
+
 </div>
 <!-- JB's Body Wrapper Area End Here -->
 <script src="/fe/js/plugins.min.js"></script>
-<script src="/fe/js/ajax-mail.js"></script>
 <script src="/fe/js/main.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    function handleWishListClick(productId) {
+        $.ajax({
+            type: "GET",
+            url: "/user/wish-list/" + productId,
+            success: function (response) {
+                console.log(response);
+                Swal.fire({
+                    title: 'Bạn có muốn thêm sản phẩm vào danh sách yêu thích không?',
+                    icon: 'question',
+                    showDenyButton: true,
+                    showCancelButton: true,
+                    confirmButtonText: 'Thêm vào',
+                    denyButtonText: `Không thêm`,
+                    customClass: {
+                        confirmButton: 'btn btn-success',
+                        denyButton: 'btn btn-danger',
+                        cancelButton: 'btn btn-secondary'
+                    },
+                    buttonsStyling: false
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        Swal.fire({
+                            title: 'Thành công!',
+                            text: 'Sản phẩm đã được thêm vào danh sách yêu thích.',
+                            icon: 'success',
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
+                    } else if (result.isDenied) {
+                        Swal.fire({
+                            title: 'Thông tin',
+                            text: 'Những thay đổi không được lưu.',
+                            icon: 'info',
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
+                    }
+                });
+            },
+            error: function (error) {
+                console.log('Error: ', error);
+                Swal.fire({
+                    title: 'Lỗi',
+                    text: 'Có lỗi xảy ra khi thêm vào danh sách yêu thích',
+                    icon: 'error',
+                    confirmButtonText: 'OK'
+                });
+            }
+        });
+
+    }
+
+    function handleCartClick(productId) {
+        $.ajax({
+            type: "GET",
+            url: "/user/cart/" + productId,
+            success: function (response) {
+                console.log(response);
+                Swal.fire({
+                    title: 'Thành công!',
+                    text: 'Đã thêm vào danh sách giỏ hàng thành công',
+                    icon: 'success',
+                    showConfirmButton: false,
+                    timer: 1500 // Thời gian hiển thị thông báo (1.5 giây)
+                });
+            },
+            error: function (error) {
+                console.log('Error: ', error);
+                Swal.fire({
+                    title: 'Lỗi',
+                    text: 'Có lỗi xảy ra khi thêm vào giỏ hàng',
+                    icon: 'error',
+                    confirmButtonText: 'OK'
+                });
+            }
+        });
+    }
+
+</script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
 </body>
 
 

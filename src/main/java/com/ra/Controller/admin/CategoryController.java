@@ -58,12 +58,17 @@ public class CategoryController {
     }
 
     @PostMapping("/category/add-category")
-    public String save(@Valid @ModelAttribute("category") CategoryRequest category, BindingResult bindingResult) {
-        if(bindingResult.hasErrors()){
+    public String save(@Valid @ModelAttribute("category") CategoryRequest category, BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors()) {
+            return "/admin/category/add-category";
+        }
+        try {
+            categoryService.save(category);
+        } catch (IllegalArgumentException e) {
+            model.addAttribute("err", e.getMessage());
             return "/admin/category/add-category";
         }
 
-        categoryService.save(category);
         return "redirect:/admin/category";
     }
 
