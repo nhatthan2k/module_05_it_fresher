@@ -81,12 +81,11 @@
                             <div class="product-select-box">
                                 <div class="product-short">
                                     <p>Sort By:</p>
-                                    <select class="nice-select">
-                                        <option value="trending">Relevance</option>
-                                        <option value="sales">Name, A to Z)</option>
-                                        <option value="sales">Name, Z to A</option>
-                                        <option value="price">Price, low to high</option>
-                                        <option value="price">Price, high to low</option>
+                                    <select class="nice-select" onchange="updatePageAndSort(currentPage, this.value, order, limit)">
+                                        <option value="name" th:selected="${sort == 'name'}">Name, A to Z</option>
+                                        <option value="name_desc" th:selected="${sort == 'name_desc'}">Name, Z to A</option>
+                                        <option value="price" th:selected="${sort == 'price'}">Price, low to high</option>
+                                        <option value="price_desc" th:selected="${sort == 'price_desc'}">Price, high to low</option>
                                     </select>
                                 </div>
                             </div>
@@ -162,12 +161,12 @@
                                                         <div class="product-select-box">
                                                             <div class="product-short">
                                                                 <p>Show</p>
-                                                                <select class="nice-select">
-                                                                    <option value="5">5</option>
-                                                                    <option value="10">10</option>
-                                                                    <option value="15">15</option>
-                                                                    <option value="20">20</option>
-                                                                    <option value="25">25</option>
+                                                                <select class="nice-select" onchange="updatePageAndSort(currentPage, sort, order, this.value)">
+                                                                    <option value="5" th:selected="${limit == 5}">5</option>
+                                                                    <option value="10" th:selected="${limit == 10}">10</option>
+                                                                    <option value="15" th:selected="${limit == 15}">15</option>
+                                                                    <option value="20" th:selected="${limit == 20}">20</option>
+                                                                    <option value="25" th:selected="${limit == 25}">25</option>
                                                                 </select>
                                                                 <span>Per Page</span>
                                                             </div>
@@ -175,16 +174,22 @@
                                                     </div>
                                                     <div class="col-lg-6 col-md-6 col-sm-6">
                                                         <ul class="pagination-box">
-                                                            <li><a href="#" class="Previous"><i
+                                                            <li><a th:href="@{/categories/{id}(id=${id}, page=${currentPage - 1}, limit=${limit})}"
+                                                                   th:if="${currentPage > 0}" class="Previous"><i
                                                                     class="fa fa-chevron-left"></i>
                                                                 Previous</a>
                                                             </li>
-                                                            <li class="active"><a href="#">1</a></li>
-                                                            <li><a href="#">2</a></li>
-                                                            <li><a href="#">3</a></li>
+                                                            <li th:each="i : ${#numbers.sequence(0, totalPages - 1)}">
+                                                                <a th:classappend="${i == currentPage} ? 'active' : ''"
+                                                                   th:href="@{/categories/{id}(id=${id}, page=${i}, limit=${limit})}"
+                                                                   th:text="${i+1}">
+                                                                </a>
+                                                            </li>
                                                             <li>
-                                                                <a href="#" class="Next"> Next <i
-                                                                        class="fa fa-chevron-right"></i></a>
+                                                                <a th:href="@{/categories/{id}(id=${id}, page=${currentPage + 1}, limit=${limit})}"
+                                                                   th:if="${currentPage < totalPages - 1}" class="Next">
+                                                                    Next <i class="fa fa-chevron-right"></i>
+                                                                </a>
                                                             </li>
                                                         </ul>
                                                     </div>
@@ -252,42 +257,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-lg-12">
-                                            <div class="paginatoin-area">
-                                                <div class="row">
-                                                    <div class="col-lg-6 col-md-6 col-sm-6">
-                                                        <div class="product-select-box">
-                                                            <div class="product-short">
-                                                                <p>Show</p>
-                                                                <select class="nice-select">
-                                                                    <option value="5">5</option>
-                                                                    <option value="10">10</option>
-                                                                    <option value="15">15</option>
-                                                                    <option value="20">20</option>
-                                                                    <option value="25">25</option>
-                                                                </select>
-                                                                <span>Per Page</span>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-6 col-md-6 col-sm-6">
-                                                        <ul class="pagination-box">
-                                                            <li><a href="#" class="Previous"><i
-                                                                    class="fa fa-chevron-left"></i>
-                                                                Previous</a>
-                                                            </li>
-                                                            <li class="active"><a href="#">1</a></li>
-                                                            <li><a href="#">2</a></li>
-                                                            <li><a href="#">3</a></li>
-                                                            <li>
-                                                                <a href="#" class="Next"> Next <i
-                                                                        class="fa fa-chevron-right"></i></a>
-                                                            </li>
-                                                        </ul>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
+
                                     </div>
                                 </div>
                             </div>
@@ -437,6 +407,27 @@
 <script src="/fe/js/plugins.min.js"></script>
 <script src="/fe/js/ajax-mail.js"></script>
 <script src="/fe/js/main.js"></script>
+<script>
+
+
+    function updatePageAndSort(page, sort, order, limit) {
+        const urlParams = new URLSearchParams(window.location.search);
+        urlParams.set('page', page);
+        urlParams.set('sort', sort);
+        urlParams.set('order', order);
+        urlParams.set('limit', limit);
+        window.location.search = urlParams.toString();
+    }
+
+</script>
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    let currentPage = [[${currentPage}]];
+    let sort = '[[${sort}]]';
+    let order = '[[${order}]]';
+    let limit = [[${limit}]];
+    /*]]>*/
+</script>
 </body>
 
 

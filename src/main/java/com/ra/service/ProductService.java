@@ -15,14 +15,10 @@ public interface ProductService {
     void delete(Long id);
     List<Product> getByNameOrDes(String name, String description);
     Page<Product> getByCategoryStatus(Pageable pageable, Boolean status);
-
+    List<Product> getByCategoryId(Long id);
     Page<Product> getByCategoryId(Long id, Pageable pageable);
 
     List<Product> searchByName(String keyword);
+    Pageable createPageable(int page, int limit, String sort, String order);
 
-    List<Product> sortByAsc(String name);
-
-    List<Product> sortByDesc(String name);
-
-    int countByCategory(Category category);
 }

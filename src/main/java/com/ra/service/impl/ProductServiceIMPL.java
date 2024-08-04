@@ -10,7 +10,9 @@ import com.ra.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.config.ConfigDataResourceNotFoundException;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -69,6 +71,11 @@ public class ProductServiceIMPL implements ProductService {
     }
 
     @Override
+    public List<Product> getByCategoryId(Long id) {
+        return productRepository.findByCategoryId(id);
+    }
+
+    @Override
     public Page<Product> getByCategoryId(Long id, Pageable pageable) {
         return productRepository.findByCategoryId(id,pageable);
     }
@@ -79,19 +86,18 @@ public class ProductServiceIMPL implements ProductService {
     }
 
     @Override
-    public List<Product> sortByAsc(String name) {
-        return productRepository.findByCategoryIdAsc(name);
-    }
-
-    @Override
-    public List<Product> sortByDesc(String name) {
-        return productRepository.findByCategoryIdDesc(name);
-    }
-
-
-    @Override
-    public int countByCategory(Category category) {
-       return productRepository.countByCategory(category);
+    public Pageable createPageable(int page, int limit, String sort, String order) {
+        Sort sortOrder;
+        if ("asc".equalsIgnoreCase(order)) {
+            sortOrder = Sort.by(sort).ascending();
+        } else if ("name_desc".equals(sort)) {
+            sortOrder = Sort.by("name").descending();
+        } else if ("price_desc".equals(sort)) {
+            sortOrder = Sort.by("price").descending();
+        } else {
+            sortOrder = Sort.by(sort).descending();
+        }
+        return PageRequest.of(page, limit, sortOrder);
     }
 
 }

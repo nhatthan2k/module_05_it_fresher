@@ -50,32 +50,42 @@ public class HomeController {
     }
 
     @GetMapping("/categories/{id}")
-    public String CategoryShop(Model model,@PathVariable("id") Long id,
-                               @RequestParam(defaultValue = "12", name = "limit") int limit,
+    public String CategoryShop(Model model, @PathVariable("id") Long id,
+                               @RequestParam(defaultValue = "5", name = "limit") int limit,
                                @RequestParam(defaultValue = "0", name = "page") int page,
-                               @RequestParam(defaultValue = "id", name = "sort") String sort,
+                               @RequestParam(defaultValue = "name", name = "sort") String sort,
                                @RequestParam(defaultValue = "asc", name = "order") String order) {
         Pageable pageable;
-        if ("asc".equals(order)) {
-            pageable = PageRequest.of(page, limit, Sort.by(sort).ascending());
+        if ("price_desc".equals(sort)) {
+            pageable = PageRequest.of(page, limit, Sort.by("price").descending());
+        } else if ("price".equals(sort)) {
+            pageable = PageRequest.of(page, limit, Sort.by("price").ascending());
+        } else if ("name_desc".equals(sort)) {
+            pageable = PageRequest.of(page, limit, Sort.by("name").descending());
         } else {
-            pageable = PageRequest.of(page, limit, Sort.by(sort).descending());
+            pageable = PageRequest.of(page, limit, Sort.by("name").ascending());
         }
 
-        Page<Product> productsPage = productService.getByCategoryId(id,pageable);
+        Page<Product> productsPage = productService.getByCategoryId(id, pageable);
         model.addAttribute("products", productsPage.getContent());
         model.addAttribute("totalPages", productsPage.getTotalPages());
         model.addAttribute("currentPage", page);
+        model.addAttribute("id", id);
+        model.addAttribute("order", order);
+        model.addAttribute("limit", limit);
+        model.addAttribute("sort", sort);
         return "/shop/shop-4-column";
     }
+
 
     @GetMapping("/products/{id}")
     public String singleProduct(Model model, @PathVariable("id") Long id) {
         ShoppingCartItemRequest shopingCartRequest = new ShoppingCartItemRequest();
         shopingCartRequest.setQuantity(1);
         Product product = productService.findById(id);
-        Page<Product> relatedProducts = productService.getByCategoryId(product.getCategory().getId(),Pageable.unpaged());
-        int count = productService.countByCategory(product.getCategory());
+        List<Product> relatedProducts = productService.getByCategoryId(product.getCategory().getId());
+        relatedProducts.remove(product);
+        int count = relatedProducts.size();
         model.addAttribute("product", product);
         model.addAttribute("shopingCartRequest", shopingCartRequest);
         model.addAttribute("relatedProducts", relatedProducts);

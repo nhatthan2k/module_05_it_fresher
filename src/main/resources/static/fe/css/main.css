@@ -4885,6 +4885,10 @@ li.right-menu .cat-mega-menu-3 > li {
   color: #ffffff;
   border-radius: 4px;
 }
+.paginatoin-area .pagination-box li a.active{
+  background-color: #0084c5;
+}
+
 @media only screen and (min-width: 576px) and (max-width: 767px) {
   .paginatoin-area .pagination-box li a {
     padding: 5px 8px;
